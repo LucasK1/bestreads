@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SearchedBooks from './components/SearchedBooks';
 
-function App() {
+import classes from './App.module.css';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.App}>
+    <h1 className={classes.title}>Welcome to Bestreads!</h1>
+    <h2 className={classes.subtitle}>Your best alternative to THE OTHER site</h2>
+    <form>
+    <input
+        type="text"
+        placeholder="Search for books..."
+        className={classes.input}
+      />
+    </form>
+
+      <SearchedBooks />
     </div>
   );
-}
+};
 
 export default App;

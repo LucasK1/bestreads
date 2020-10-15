@@ -1,0 +1,20 @@
+.SearchedBooks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.bookCover {
+  height: 200px;
+  width: 128px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 20px #ccc;
+}
+
+.noImg {
+  height: 200px;
+  width: 128px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
