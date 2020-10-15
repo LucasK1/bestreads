@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchedBooks from './components/SearchedBooks';
 
 import classes from './App.module.css';
@@ -7,15 +7,14 @@ const App = () => {
   const [input, setInput] = useState('');
   const [searchResultsVisible, setSearchResultsVisible] = useState(false);
 
+  useEffect(() => {
+    input ? setSearchResultsVisible(true) : setSearchResultsVisible(false);
+  }, [input])
+
   const onChangeHandler = (e) => {
     const inputValue = e.target.value;
     setInput((prevInput) => (prevInput = inputValue));
   };
-
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    setSearchResultsVisible(true);
-  }
 
   return (
     <div className={classes.App}>
@@ -23,7 +22,7 @@ const App = () => {
       <h2 className={classes.subtitle}>
         Your best alternative to THE OTHER site
       </h2>
-      <form onSubmit={onSubmitHandler}>
+      <form >
         <input
           type="text"
           placeholder="Search for books..."
@@ -32,8 +31,7 @@ const App = () => {
           value={input}
         />
       </form>
-      {/* {searchResultsVisible ? <SearchedBooks search={input} /> : null} */}
-      {input ? <SearchedBooks search={input} /> : null}
+      {searchResultsVisible ? <SearchedBooks search={input} /> : null}
       
     </div>
   );
