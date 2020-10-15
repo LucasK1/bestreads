@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import SearchedBooks from './components/SearchedBooks';
 
 import classes from './App.module.css';
@@ -9,9 +10,10 @@ const App = () => {
 
   useEffect(() => {
     input ? setSearchResultsVisible(true) : setSearchResultsVisible(false);
-  }, [input])
+  }, [input]);
 
   const onChangeHandler = (e) => {
+    console.log('dupa');
     const inputValue = e.target.value;
     setInput((prevInput) => (prevInput = inputValue));
   };
@@ -22,7 +24,7 @@ const App = () => {
       <h2 className={classes.subtitle}>
         Your best alternative to THE OTHER site
       </h2>
-      <form >
+      <form>
         <input
           type="text"
           placeholder="Search for books..."
@@ -32,7 +34,6 @@ const App = () => {
         />
       </form>
       {searchResultsVisible ? <SearchedBooks search={input} /> : null}
-      
     </div>
   );
 };
