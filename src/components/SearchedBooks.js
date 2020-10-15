@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import classes from './SearchedBooks.module.css';
 
-const SearchedBooks = () => {
+const SearchedBooks = ({search}) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
     axios
       .get(
-        'https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&maxResults=30'
+        `https://www.googleapis.com/books/v1/volumes?q=${search}&maxResults=30`
       )
       .then(({ data }) => {
         console.log(data);
         const fetchedBooks = data.items;
         setBooks((prevBooks) => (prevBooks = [...fetchedBooks]));
       });
-  }, []);
+  }, [search]);
   return (
     <div className={classes.SearchedBooks}>
       {books
