@@ -15,12 +15,11 @@ const SearchedBooks = ({ history, books }) => {
       {books
         ? books.map((book) => {
             return book.volumeInfo.imageLinks ? (
-              <Link to={`/${book.id}`}>
+              <Link to={`/${book.id}`} key={book.id}>
                 <img
                   src={book.volumeInfo.imageLinks.smallThumbnail}
                   alt=""
                   className={classes.bookCover}
-                  key={book.id}
                 />
               </Link>
             ) : (

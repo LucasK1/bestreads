@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { debounce } from 'lodash';
 
@@ -6,17 +6,16 @@ import SearchedBooks from './components/SearchedBooks';
 
 import classes from './App.module.scss';
 import Spinner from './components/UI/Spinner';
+import { BooksContext } from './components/context/BooksContext';
 
 const App = () => {
   const [input, setInput] = useState('');
-  const [searchedBooks, setSearchedBooks] = useState([]);
   const [loadingResults, setLoadingResults] = useState(false);
+  const [showSearchedResults, setShowSearchedResults] = useState(false);
 
-  // useEffect(() => {
-  //   input ? setSearchResultsVisible(true) : setSearchResultsVisible(false);
-  // }, [input]);
+  const { fetchedBooks, setFetchedBooks } = useContext(BooksContext);
 
-  const fetchSearch = debounce(
+  const fetchBooks = debounce(
     (input) => {
       if (input) {
         const inputArray = input.split(',');
@@ -27,8 +26,8 @@ const App = () => {
           )
           .then(({ data }) => {
             console.log(data);
-            const fetchedBooks = data.items;
-            setSearchedBooks((prevBooks) => (prevBooks = [...fetchedBooks]));
+            const items = data.items;
+            setFetchedBooks([...items]);
             setLoadingResults(false);
           })
           .then(console.error);
@@ -42,40 +41,44 @@ const App = () => {
   );
 
   const onChangeHandler = (e) => {
-    console.log('dupa');
-    setLoadingResults(true);
     const inputValue = e.target.value;
     setInput((prevInput) => (prevInput = inputValue));
-    fetchSearch(input);
+    // fetchBooks(input);
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    fetchSearch(input);
+    setLoadingResults(true);
+    setShowSearchedResults(true);
+    fetchBooks(input);
   };
 
   return (
     <div className={classes.App}>
-      <h1 className={classes.title}>Welcome to Bestreads!</h1>
-      <h2 className={classes.subtitle}>
-        Your best alternative to THE OTHER site
-      </h2>
-      <form onSubmit={onSubmitHandler}>
-        <input
-          type="text"
-          placeholder="Search for books..."
-          className={classes.input}
-          onChange={onChangeHandler}
-          value={input}
-        />
-      </form>
-      {input ? (
+      <header className={classes.header}>
+        <h1 className={classes.title}>Welcome to Bestreads!</h1>
+        <h2 className={classes.subtitle}>
+          Your best alternative to THE OTHER site
+        </h2>
+        <form onSubmit={onSubmitHandler}>
+          <input
+            type="text"
+            placeholder="Search for books..."
+            className={classes.input}
+            onChange={onChangeHandler}
+            value={input}
+          />
+        </form>
+      </header>
+      {showSearchedResults ? (
         loadingResults ? (
           <div className={classes.spinnerContainer}>
             <Spinner />
           </div>
         ) : (
-          <SearchedBooks books={searchedBooks} />
+          <div className={classes.searchedBooksContainer}>
+          <SearchedBooks books={fetchedBooks} />
+          </div>
         )
       ) : null}
     </div>
