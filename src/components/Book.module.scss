@@ -13,8 +13,10 @@
   gap: 20px;
   // justify-content: space-between;
   grid-template-areas:
+    'back . .'
     'title title title'
-    'bookImage description description';
+    'bookImage description description'
+    'alert add add';
 }
 
 .title {
@@ -39,8 +41,13 @@ span {
   display: inline-block;
   grid-area: description;
   // width: 500px;
-
 }
 .links {
   grid-area: links;
+}
+.add {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  grid-area: add;
+  height: 35px;
 }
