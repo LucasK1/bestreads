@@ -17,7 +17,8 @@ const Book = ({ history }) => {
       .then(({ data }) => {
         setBook({ ...data });
         console.log(data);
-      });
+      })
+      .catch(console.error);
   }, [id]);
 
   const addToShelfHandler = () => {
@@ -39,6 +40,9 @@ const Book = ({ history }) => {
         <div className={classes.container}>
           <Link to="/">
             <button style={{ gridArea: 'back' }}>Go back</button>
+          </Link>
+          <Link to="/shelf">
+            <button style={{ gridArea: 'shelf' }}>See the shelf</button>
           </Link>
           <h1 className={classes.title}>{`${book.volumeInfo.title} by ${
             book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'unknown'
