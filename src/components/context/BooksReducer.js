@@ -11,6 +11,14 @@ export default (state, action) => {
         ...state,
         userShelf: [...state.userShelf, action.payload],
       };
+    case 'DELETE_BOOK_FROM_SHELF':
+      const newShelf = state.userShelf.filter(
+        (book) => book.id !== action.payload
+      );
+      return {
+        ...state,
+        userShelf: [...newShelf],
+      };
     default:
       return state;
   }

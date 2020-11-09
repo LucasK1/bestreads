@@ -18,6 +18,9 @@ const BooksContextProvider = ({ children }) => {
   const setUserShelf = (book) => {
     dispatch({ type: 'SET_USER_SHELF', payload: book });
   };
+  const deleteBookFromShelf = (id) => {
+    dispatch({ type: 'DELETE_BOOK_FROM_SHELF', payload: id });
+  };
 
   return (
     <BooksContext.Provider
@@ -26,6 +29,7 @@ const BooksContextProvider = ({ children }) => {
         userShelf: state.userShelf,
         setFetchedBooks,
         setUserShelf,
+        deleteBookFromShelf,
       }}>
       {children}
     </BooksContext.Provider>

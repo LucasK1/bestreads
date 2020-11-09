@@ -1,16 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { BooksContext } from './context/BooksContext';
 
-import classes from './Shelf.module.scss';
+// import classes from './Shelf.module.scss';
 
 const Shelf = () => {
-  const { userShelf, setUserShelf } = useContext(BooksContext);
+  const { userShelf, deleteBookFromShelf } = useContext(BooksContext);
 
-  const deleteBookFromShelf = (id) => {
-    const newShelf = userShelf.filter((book) => book.id !== id);
-
-    console.log(newShelf);
-    setUserShelf([...newShelf]);
+  const deleteHandler = (e, id) => {
+    e.preventDefault();
+    deleteBookFromShelf(id);
   };
 
   return (
@@ -18,11 +16,12 @@ const Shelf = () => {
       <ul>
         {userShelf.length ? (
           userShelf.map((book) => {
+            console.log(userShelf, 'Dupa');
             return (
-              <>
-                <li key={book.id}>{book.volumeInfo.title}</li>
-                <button onClick={() => deleteBookFromShelf(book.id)}>X</button>
-              </>
+              <li key={book.id}>
+                <span>{book.volumeInfo.title}</span>
+                <button onClick={(e) => deleteHandler(e, book.id)}>X</button>
+              </li>
             );
           })
         ) : (
