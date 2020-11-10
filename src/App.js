@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
-import { debounce } from 'lodash';
 
 import SearchedBooks from './components/SearchedBooks';
 
@@ -15,35 +14,31 @@ const App = () => {
 
   const { fetchedBooks, setFetchedBooks } = useContext(BooksContext);
 
-  const fetchBooks = debounce(
-    (input) => {
-      if (input) {
-        const inputArray = input.split(',');
-        const searchQuery = inputArray.join('+');
-        axios
-          .get(
-            `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=30`
-          )
-          .then(({ data }) => {
-            console.log(data);
+  const fetchBooks = (input) => {
+    if (input) {
+      const inputArray = input.split(',');
+      const searchQuery = inputArray.join('+');
+      axios
+        .get(
+          `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=30`
+        )
+        .then(({ data }) => {
+          console.log(data);
+          if (data.items) {
             const items = data.items;
             setFetchedBooks([...items]);
-            setLoadingResults(false);
-          })
-          .then(console.error);
-      }
-    },
-    750,
-    {
-      leading: false,
-      trailing: true,
+          } else {
+            setFetchedBooks([]);
+          }
+          setLoadingResults(false);
+        })
+        .then(console.error);
     }
-  );
+  };
 
   const onChangeHandler = (e) => {
     const inputValue = e.target.value;
     setInput((prevInput) => (prevInput = inputValue));
-    // fetchBooks(input);
   };
 
   const onSubmitHandler = (e) => {
@@ -77,7 +72,7 @@ const App = () => {
           </div>
         ) : (
           <div className={classes.searchedBooksContainer}>
-          <SearchedBooks books={fetchedBooks} />
+            <SearchedBooks books={fetchedBooks} />
           </div>
         )
       ) : null}

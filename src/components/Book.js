@@ -3,7 +3,8 @@ import axios from 'axios';
 import { BooksContext } from './context/BooksContext';
 
 import classes from './Book.module.scss';
-import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
+// import { Link } from 'react-router-dom';
 
 const Book = ({ history }) => {
   const { userShelf, setUserShelf } = useContext(BooksContext);
@@ -38,12 +39,6 @@ const Book = ({ history }) => {
     <div className={classes.main}>
       {book ? (
         <div className={classes.container}>
-          <Link to="/">
-            <button style={{ gridArea: 'back' }}>Go back</button>
-          </Link>
-          <Link to="/shelf">
-            <button style={{ gridArea: 'shelf' }}>See the shelf</button>
-          </Link>
           <h1 className={classes.title}>{`${book.volumeInfo.title} by ${
             book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'unknown'
           }`}</h1>
@@ -52,7 +47,17 @@ const Book = ({ history }) => {
             <span>{}</span>
           </div>
           <div className={classes.description}>
-            <p>{book.volumeInfo.description}</p>
+            <p className={classes.publishedDate}>
+              Published{' '}
+              <Moment
+                format="DD MMMM YYYY"
+                date={book.volumeInfo.publishedDate}
+              />
+            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: book.volumeInfo.description,
+              }}></p>
           </div>
           <button className={classes.add} onClick={addToShelfHandler}>
             Add to your shelf
@@ -67,11 +72,6 @@ const Book = ({ history }) => {
               Book is already on your shelf
             </p>
           ) : null}
-          {/* <div className={classes.links}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptas
-            placeat tempore atque. Pariatur ipsam veniam nihil amet laudantium
-            dolorem autem.
-          </div> */}
         </div>
       ) : (
         <p>Loading...</p>

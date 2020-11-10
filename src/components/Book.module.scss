@@ -3,25 +3,26 @@
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .container {
-  width: 1000px;
+  padding: 0 100px;
+  width: 1200px;
+  padding-top: 50px;
   display: grid;
-  // grid-template-columns: 1fr 3fr;
   gap: 20px;
-  // justify-content: space-between;
+  column-gap: 50px;
   grid-template-areas:
-    'back . shelf'
-    'title title title'
-    'bookImage description description'
+    'bookImage title title'
+    '. description description'
     'alert add add';
 }
 
 .title {
   grid-area: title;
   text-align: center;
+  border-bottom: 1px solid #ccc;
 }
 
 span {
@@ -41,6 +42,12 @@ span {
   display: inline-block;
   grid-area: description;
   // width: 500px;
+
+  .publishedDate {
+    border-bottom: 1px solid #ccc;
+    margin-right: 635px;
+    padding-bottom: 5px;
+  }
 }
 .links {
   grid-area: links;
