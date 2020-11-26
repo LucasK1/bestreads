@@ -43,9 +43,11 @@ const App = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    setLoadingResults(true);
-    setShowSearchedResults(true);
-    fetchBooks(input);
+    if (input) {
+      setLoadingResults(true);
+      setShowSearchedResults(true);
+      fetchBooks(input);
+    }
   };
 
   return (
