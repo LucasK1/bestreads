@@ -20,7 +20,7 @@ const App = () => {
       const searchQuery = inputArray.join('+');
       axios
         .get(
-          `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=30`
+          `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=30&langRestrict=en`
         )
         .then(({ data }) => {
           console.log(data);

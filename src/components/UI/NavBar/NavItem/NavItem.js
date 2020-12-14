@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import classes from './NavItem.module.scss'
+import classes from './NavItem.module.scss';
 
-const NavItem = (props) => {
+const NavItem = ({ path, title, dropdown, children }) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <li className={classes.NavItem}>
-      <Link to={props.path} className={classes.NavLink}>{props.title}</Link>
+      {dropdown ? (
+        <>
+          <span className={classes.NavLink} onClick={() => setOpen(!open)}>
+            {title}
+          </span>
+        </>
+      ) : (
+        <Link to={path} className={classes.NavLink}>
+          {title}
+        </Link>
+      )}
+      {open && children}
     </li>
   );
 };

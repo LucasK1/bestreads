@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { BooksContext } from './context/BooksContext';
 
-// import classes from './Shelf.module.scss';
+import classes from './Shelf.module.scss';
 
 const Shelf = () => {
   const { userShelf, deleteBookFromShelf } = useContext(BooksContext);
@@ -12,15 +12,31 @@ const Shelf = () => {
   };
 
   return (
-    <div>
-      <ul>
+    <div className={classes.container}>
+      <ul className={classes.bookList}>
         {userShelf.length ? (
           userShelf.map((book) => {
             console.log(userShelf, 'Dupa');
             return (
-              <li key={book.id}>
-                <span>{book.volumeInfo.title}</span>
-                <button onClick={(e) => deleteHandler(e, book.id)}>X</button>
+              <li key={book.id} className={classes.singleBook}>
+                <img
+                  src={book.volumeInfo.imageLinks.smallThumbnail}
+                  alt=""
+                  height="75"
+                  width="50"
+                />
+                <span className={classes.bookTitle}>
+                  {`${book.volumeInfo.title} by ${
+                    book.volumeInfo.authors
+                      ? book.volumeInfo.authors[0]
+                      : 'unknown'
+                  }`}
+                </span>
+                <button
+                  className={classes.deleteButton}
+                  onClick={(e) => deleteHandler(e, book.id)}>
+                  Delete
+                </button>
               </li>
             );
           })

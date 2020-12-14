@@ -16,7 +16,8 @@
   grid-template-areas:
     'bookImage title title'
     '. description description'
-    'alert add add';
+    '. add add'
+    '. alert alert';
 }
 
 .title {

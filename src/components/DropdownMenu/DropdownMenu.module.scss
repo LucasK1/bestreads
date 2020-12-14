@@ -1,0 +1,14 @@
+@import '../../variables';
+
+.dropdownMenu {
+  background-color: $navbarBg;
+  position: absolute;
+  top: 48px;
+  width: 300px;
+  transform: translateX(-90%);
+  // border: 1px solid black;
+  box-shadow: 2px 2px 20px #ccc;
+  border-radius: 5px;
+  padding: 1rem;
+  overflow: hidden;
+}

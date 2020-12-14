@@ -1,15 +1,15 @@
 .NavItem {
   list-style: none;
-  text-align: center;
-  font-size: 1.4rem;
-  line-height: 1rem;
-  // margin: 30px;
   .NavLink {
+    // line-height: 1rem;
+    font-size: 1.4rem;
     text-decoration: none;
     color: #544;
+    transition: filter 200ms;
 
     &:hover {
-      color: #ccc;
+      cursor: pointer;
+      filter: brightness(2);
     }
   }
 }

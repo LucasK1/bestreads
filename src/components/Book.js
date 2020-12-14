@@ -31,7 +31,6 @@ const Book = ({ history }) => {
     } else {
       setBookAdded(false);
       setBookAlreadyExists(true);
-      console.log('You already have that book');
     }
   };
 
