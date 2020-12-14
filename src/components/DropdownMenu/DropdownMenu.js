@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import DropdownItem from './DropdownItem/DropdownItem';
@@ -8,6 +8,11 @@ import classes from './DropdownMenu.module.scss';
 const DropdownMenu = () => {
   const [activeMenu, setActiveMenu] = useState('main');
   const [menuHeight, setMenuHeight] = useState(null);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    setMenuHeight(dropdownRef.current.firstChild.offsetHeight);
+  }, []);
 
   function calcHeight(el) {
     const height = el.offsetHeight;
@@ -15,7 +20,10 @@ const DropdownMenu = () => {
   }
 
   return (
-    <div className={classes.dropdownMenu} style={{ height: menuHeight }}>
+    <div
+      className={classes.dropdownMenu}
+      style={{ height: menuHeight }}
+      ref={dropdownRef}>
       <CSSTransition
         in={activeMenu === 'main'}
         onEnter={calcHeight}
