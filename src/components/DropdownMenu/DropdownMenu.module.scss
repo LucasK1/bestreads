@@ -1,4 +1,4 @@
-@import '../../variables';
+@import "../../variables";
 
 .dropdownMenu {
   background-color: $navbarBg;
@@ -6,9 +6,45 @@
   top: 48px;
   width: 300px;
   transform: translateX(-90%);
-  // border: 1px solid black;
   box-shadow: 2px 2px 20px #ccc;
   border-radius: 5px;
   padding: 1rem;
   overflow: hidden;
+  transition: height 500ms ease;
+}
+
+.menu {
+  width: 100%;
+  
+  &-primary-enter {
+    position: absolute;
+    transform: translateX(-110%);
+
+    &-active {
+      transform: translateX(0%);
+      transition: all 500ms ease;
+    }
+  }
+  &-primary-exit {
+    position: absolute;
+
+    &-active {
+      transform: translateX(-110%);
+      transition: all 500ms ease;
+    }
+  }
+  &-secondary-enter {
+    transform: translateX(110%);
+
+    &-active {
+      transform: translateX(0%);
+      transition: all 500ms ease;
+    }
+  }
+  &-secondary-exit {
+    &-active {
+      transform: translateX(110%);
+      transition: all 500ms ease;
+    }
+  }
 }
