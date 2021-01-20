@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import NavItem from './NavItem/NavItem';
-import { ReactComponent as CaretIcon } from '../../../assets/caret.svg';
+// import { ReactComponent as CaretIcon } from '../../../assets/caret.svg';
+// import DropdownMenu from '../../DropdownMenu/DropdownMenu';
 
 import classes from './NavBar.module.scss';
-import DropdownMenu from '../../DropdownMenu/DropdownMenu';
 
 const NavBar = () => {
-  useState();
+  
+
 
   return (
     <nav className={classes.NavBar}>
@@ -15,7 +16,7 @@ const NavBar = () => {
         <NavItem path="/" title="Bestreads" />
         <ul className={classes.NavItems}>
           <NavItem path="/shelf" title="Shelf" />
-          <NavItem
+          {/* <NavItem
             dropdown
             title={
               <CaretIcon
@@ -23,7 +24,7 @@ const NavBar = () => {
               />
             }>
             <DropdownMenu />
-          </NavItem>
+          </NavItem> */}
         </ul>
       </div>
     </nav>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classes from './NavItem.module.scss';
 
@@ -14,7 +14,10 @@ const NavItem = ({ path, title, dropdown, children }) => {
           </span>
         </>
       ) : (
-        <Link to={path} className={classes.NavLink}>
+        <Link
+          to={path}
+          className={`${classes.NavLink} ${classes.isActive}`}
+          >
           {title}
         </Link>
       )}

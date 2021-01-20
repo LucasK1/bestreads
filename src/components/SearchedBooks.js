@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './SearchedBooks.module.scss';
 
 const SearchedBooks = ({ books }) => {
+  const [mouseHover, setMouseHover] = useState(false);
+  const moreInfoHandler = (e, id) => {
+    // setTimeout(() => {
+
+    //   console.log(books.filter((book) => book.id === id)[0]);
+    // }, 1000)
+  };
+
   return (
     <div className={classes.SearchedBooks}>
       {books.length ? (
@@ -14,6 +22,7 @@ const SearchedBooks = ({ books }) => {
                 src={book.volumeInfo.imageLinks.smallThumbnail}
                 alt=""
                 className={classes.bookCover}
+                onMouseEnter={(e) => moreInfoHandler(e, book.id)}
               />
             </Link>
           ) : (

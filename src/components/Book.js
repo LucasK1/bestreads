@@ -7,7 +7,7 @@ import Moment from 'react-moment';
 // import { Link } from 'react-router-dom';
 
 const Book = ({ history }) => {
-  const { userShelf, setUserShelf } = useContext(BooksContext);
+  const { userShelf } = useContext(BooksContext);
   const [book, setBook] = useState(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
@@ -25,7 +25,13 @@ const Book = ({ history }) => {
   const addToShelfHandler = () => {
     const compareBook = userShelf.find((item) => item.id === book.id);
     if (!compareBook) {
-      setUserShelf(book);
+      axios
+        .post(
+          'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json',
+          book
+        )
+        .then((res) => console.log(res))
+        .catch(console.error());
       setBookAlreadyExists(false);
       setBookAdded(true);
     } else {

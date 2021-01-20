@@ -1,9 +1,9 @@
 @import "../../variables";
 
 .dropdownMenu {
-  background-color: $navbarBg;
+  // background-color: $navbarBg;
   position: absolute;
-  top: 48px;
+  top: 100px;
   width: 300px;
   transform: translateX(-90%);
   box-shadow: 2px 2px 20px #ccc;

@@ -1,14 +1,41 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import axios from 'axios';
+
 import { BooksContext } from './context/BooksContext';
 
 import classes from './Shelf.module.scss';
 
 const Shelf = () => {
-  const { userShelf, deleteBookFromShelf } = useContext(BooksContext);
+  const { userShelf, setUserShelf, deleteBookFromShelf } = useContext(
+    BooksContext
+  );
+
+  useEffect(() => {
+    axios
+      .get(
+        'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json'
+      )
+      .then(({ data }) => {
+        console.log(data, 'Dane');
+        const dataValues = Object.values(data);
+        const dataKeys = Object.keys(data);
+        const modifiedData = dataValues.map((item, index) => {
+          return { ...item, firebaseId: dataKeys[index] };
+        });
+        setUserShelf(modifiedData);
+      })
+      .catch(console.error);
+  }, [setUserShelf]);
 
   const deleteHandler = (e, id) => {
     e.preventDefault();
     deleteBookFromShelf(id);
+    axios
+      .delete(
+        `https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books/${id}.json`
+      )
+      .then((res) => console.log(res))
+      .catch(console.error);
   };
 
   return (
@@ -17,8 +44,9 @@ const Shelf = () => {
         {userShelf.length ? (
           userShelf.map((book) => {
             console.log(userShelf, 'Dupa');
+            console.log(book, 'Dupa1');
             return (
-              <li key={book.id} className={classes.singleBook}>
+              <li key={book.firebaseId} className={classes.singleBook}>
                 <img
                   src={book.volumeInfo.imageLinks.smallThumbnail}
                   alt=""
@@ -34,7 +62,7 @@ const Shelf = () => {
                 </span>
                 <button
                   className={classes.deleteButton}
-                  onClick={(e) => deleteHandler(e, book.id)}>
+                  onClick={(e) => deleteHandler(e, book.firebaseId)}>
                   Delete
                 </button>
               </li>

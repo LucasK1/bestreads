@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from 'react';
+import React, { useReducer, createContext, useCallback } from 'react';
 import BooksReducer from './BooksReducer';
 
 export const initialState = {
@@ -15,12 +15,12 @@ const BooksContextProvider = ({ children }) => {
     dispatch({ type: 'SET_FETCHED_BOOKS', payload: fetchedBooks });
   };
 
-  const setUserShelf = (book) => {
+  const setUserShelf = useCallback((book) => {
     dispatch({ type: 'SET_USER_SHELF', payload: book });
-  };
-  const deleteBookFromShelf = (id) => {
+  }, []);
+  const deleteBookFromShelf = useCallback((id) => {
     dispatch({ type: 'DELETE_BOOK_FROM_SHELF', payload: id });
-  };
+  }, []);
 
   return (
     <BooksContext.Provider
