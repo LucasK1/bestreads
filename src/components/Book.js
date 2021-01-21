@@ -7,7 +7,7 @@ import Moment from 'react-moment';
 // import { Link } from 'react-router-dom';
 
 const Book = ({ history }) => {
-  const { userShelf } = useContext(BooksContext);
+  const { userShelf, setUserShelf } = useContext(BooksContext);
   const [book, setBook] = useState(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
@@ -24,6 +24,7 @@ const Book = ({ history }) => {
 
   const addToShelfHandler = () => {
     const compareBook = userShelf.find((item) => item.id === book.id);
+    setUserShelf([...userShelf, book]);
     if (!compareBook) {
       axios
         .post(
