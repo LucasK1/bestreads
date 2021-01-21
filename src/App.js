@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import SearchedBooks from './components/SearchedBooks';
@@ -12,8 +12,25 @@ const App = () => {
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);
 
-  const { fetchedBooks, setFetchedBooks } = useContext(BooksContext);
+  const { fetchedBooks, setFetchedBooks, setUserShelf } = useContext(BooksContext);
 
+  useEffect(() => {
+    axios
+      .get(
+        'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json'
+      )
+      .then(({ data }) => {
+        console.log(data, 'Dane');
+        const dataValues = Object.values(data);
+        const dataKeys = Object.keys(data);
+        const modifiedData = dataValues.map((item, index) => {
+          return { ...item, firebaseId: dataKeys[index] };
+        });
+        setUserShelf(modifiedData);
+      })
+      .catch(console.error);
+  }, [setUserShelf]);
+  
   const fetchBooks = (input) => {
     if (input) {
       const inputArray = input.split(',');
@@ -55,7 +72,7 @@ const App = () => {
       <header className={classes.header}>
         <h1 className={classes.title}>Welcome to Bestreads!</h1>
         <h2 className={classes.subtitle}>
-          Your best alternative to THE OTHER site
+          This will be your best alternative to THE OTHER site
         </h2>
         <form onSubmit={onSubmitHandler}>
           <input

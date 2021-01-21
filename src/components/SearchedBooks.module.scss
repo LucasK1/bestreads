@@ -1,21 +1,10 @@
 .SearchedBooks {
   height: 100%;
-  max-width: 1200px; 
-  display: flex;
-  flex-wrap: wrap;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
   gap: 20px;
-  transition: height 1s;
-}
-
-.bookInfoBox {
-  height: 100px;
-  width: 100px;
-  background-color: grey;
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  z-index: 300;
+  transition: height 1s linear;
 }
 
 .bookCover,
@@ -25,14 +14,12 @@
   border-radius: 3px;
   box-shadow: 2px 2px 20px #ccc;
   position: relative;
+  z-index: 280;
   &:hover {
     transform: scale(1.2);
     transition: transform 300ms;
     transition-delay: 30ms;
     cursor: pointer;
-  }
-  &:hover .bookInfoBox {
-    display: block;
   }
 }
 

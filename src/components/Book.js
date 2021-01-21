@@ -24,8 +24,8 @@ const Book = ({ history }) => {
 
   const addToShelfHandler = () => {
     const compareBook = userShelf.find((item) => item.id === book.id);
-    setUserShelf([...userShelf, book]);
     if (!compareBook) {
+      setUserShelf([...userShelf, book]);
       axios
         .post(
           'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json',

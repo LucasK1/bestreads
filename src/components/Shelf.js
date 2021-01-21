@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 
 import { BooksContext } from './context/BooksContext';
@@ -6,26 +6,7 @@ import { BooksContext } from './context/BooksContext';
 import classes from './Shelf.module.scss';
 
 const Shelf = () => {
-  const { userShelf, setUserShelf, deleteBookFromShelf } = useContext(
-    BooksContext
-  );
-
-  useEffect(() => {
-    axios
-      .get(
-        'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json'
-      )
-      .then(({ data }) => {
-        console.log(data, 'Dane');
-        const dataValues = Object.values(data);
-        const dataKeys = Object.keys(data);
-        const modifiedData = dataValues.map((item, index) => {
-          return { ...item, firebaseId: dataKeys[index] };
-        });
-        setUserShelf(modifiedData);
-      })
-      .catch(console.error);
-  }, [setUserShelf]);
+  const { userShelf, deleteBookFromShelf } = useContext(BooksContext);
 
   const deleteHandler = (e, id) => {
     e.preventDefault();

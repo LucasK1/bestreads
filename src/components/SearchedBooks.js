@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import _ from 'lodash';
 
 import classes from './SearchedBooks.module.scss';
@@ -14,19 +14,14 @@ const SearchedBooks = ({ books }) => {
       {books.length ? (
         books.map((book) => {
           return book.volumeInfo.imageLinks ? (
-            <Link to={`/${book.id}`} key={book.id}>
-              <div className={classes.bookCover}>
-                <img
-                  src={book.volumeInfo.imageLinks.smallThumbnail}
-                  alt=""
-                  className={classes.bookCover}
-                  onMouseEnter={(e) => moreInfoHandler(e, book.id)}
-                />
-                <div className={classes.bookInfoBox}>
-                  {book.volumeInfo.title}
-                </div>
-              </div>
-            </Link>
+            <NavLink to={`/${book.id}`} key={book.id}>
+              <img
+                src={book.volumeInfo.imageLinks.smallThumbnail}
+                className={classes.bookCover}
+                alt=""
+                onMouseEnter={(e) => moreInfoHandler(e, book.id)}
+              />
+            </NavLink>
           ) : (
             <div className={classes.noCover} key={book.id}>
               <span>{book.volumeInfo.title}</span>
