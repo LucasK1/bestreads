@@ -17,8 +17,8 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={MainPage} />
             <Route path="/shelf" exact component={Shelf} />
-            <Route path="/:id" exact component={Book} />
             <Route path="/signup" exact component={SignupForm} />
+            <Route path="/:id" exact component={Book} />
           </Switch>
         </div>
       </BrowserRouter>
