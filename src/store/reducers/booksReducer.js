@@ -6,7 +6,6 @@ const initialState = {
 };
 
 const setFetchedBooks = (state, action) => {
-  console.log(action.payload, 'dupa');
   return {
     ...state,
     fetchedBooks: action.fetchedBooks,

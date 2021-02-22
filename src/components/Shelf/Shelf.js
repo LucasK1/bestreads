@@ -24,8 +24,8 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
       <ul className={classes.bookList}>
         {userShelf.length ? (
           userShelf.map((book) => {
-            console.log(userShelf, 'Dupa');
-            console.log(book, 'Dupa1');
+            console.log(userShelf, 'userShelf');
+            console.log(book, 'book');
             return (
               <li key={book.firebaseId} className={classes.singleBook}>
                 <img

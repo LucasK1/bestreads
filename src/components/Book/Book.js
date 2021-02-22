@@ -1,17 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import axios from 'axios';
 
-import { BooksContext } from '../../context/BooksContext';
+import * as actions from 'store/actions';
 
 import classes from './Book.module.scss';
 
-const Book = ({ history }) => {
-  const { userShelf, setUserShelf } = useContext(BooksContext);
+const Book = ({ history, userShelf, onSetUserShelf }) => {
   const [book, setBook] = useState(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
+
   const id = history.location.pathname.replace('/', '');
+
   useEffect(() => {
     axios
       .get(`https://www.googleapis.com/books/v1/volumes/${id}`)
@@ -22,10 +24,10 @@ const Book = ({ history }) => {
       .catch(console.error);
   }, [id]);
 
-  const addToShelfHandler = () => {
+  function addToShelfHandler() {
     const compareBook = userShelf.find((item) => item.id === book.id);
     if (!compareBook) {
-      setUserShelf([...userShelf, book]);
+      onSetUserShelf([...userShelf, book]);
       axios
         .post(
           'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json',
@@ -86,4 +88,16 @@ const Book = ({ history }) => {
   );
 };
 
-export default Book;
+const mapStateToProps = (state) => {
+  return {
+    userShelf: state.books.userShelf,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSetUserShelf: (book) => dispatch(actions.setUserShelf(book)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Book);
