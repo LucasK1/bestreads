@@ -22,7 +22,7 @@ export const auth = (email, password, isSignup) => (dispatch) => {
   };
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
     isSignup ? 'signUp' : 'signInWithPassword'
-  }?key=AIzaSyDEINgm_j68xaj2FBkXcnkFvhoTgALyXBc`;
+  }?key=${process.env.REACT_APP_API_KEY}`;
   axios
     .post(url, signupData)
     .then(({ data }) => {
