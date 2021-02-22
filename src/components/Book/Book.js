@@ -41,7 +41,7 @@ const Book = ({ history, userShelf, onSetUserShelf }) => {
       setBookAdded(false);
       setBookAlreadyExists(true);
     }
-  };
+  }
 
   return (
     <div className={classes.main}>

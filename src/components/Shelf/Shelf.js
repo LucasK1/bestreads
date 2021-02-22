@@ -7,7 +7,6 @@ import * as actions from 'store/actions';
 import classes from './Shelf.module.scss';
 
 const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
-
   function deleteHandler(e, id) {
     e.preventDefault();
     onDeleteBookFromShelf(id);
@@ -17,7 +16,7 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
       )
       .then((res) => console.log(res))
       .catch(console.error);
-  };
+  }
 
   return (
     <div className={classes.container}>

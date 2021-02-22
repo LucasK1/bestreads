@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as types from '../actions/types';
 
 const initialState = {
   fetchedBooks: [],
@@ -31,11 +31,11 @@ const deleteBookFromShelf = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_FETCHED_BOOKS:
+    case types.SET_FETCHED_BOOKS:
       return setFetchedBooks(state, action);
-    case actionTypes.SET_USER_SHELF:
+    case types.SET_USER_SHELF:
       return setUsetShelf(state, action);
-    case actionTypes.DELETE_BOOK_FROM_SHELF:
+    case types.DELETE_BOOK_FROM_SHELF:
       return deleteBookFromShelf(state, action);
     default:
       return state;
