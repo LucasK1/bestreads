@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { BooksContext } from './context/BooksContext';
+import * as actions from 'store/actions';
 
 import classes from './Shelf.module.scss';
 
-const Shelf = () => {
-  const { userShelf, deleteBookFromShelf } = useContext(BooksContext);
+const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
 
-  const deleteHandler = (e, id) => {
+  function deleteHandler(e, id) {
     e.preventDefault();
-    deleteBookFromShelf(id);
+    onDeleteBookFromShelf(id);
     axios
       .delete(
         `https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books/${id}.json`
@@ -57,4 +57,16 @@ const Shelf = () => {
   );
 };
 
-export default Shelf;
+const mapStateToProps = (state) => {
+  return {
+    userShelf: state.books.userShelf,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onDeleteBookFromShelf: (id) => dispatch(actions.deleteBookFromShelf(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Shelf);

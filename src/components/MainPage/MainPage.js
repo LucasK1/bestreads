@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
-import SearchedBooks from '../SearchedBooks';
+import * as actions from 'store/actions';
+
+import SearchedBooks from 'components/SearchedBooks/SearchedBooks';
+import Spinner from 'components/UI/Spinner';
 
 import classes from './MainPage.module.scss';
-import Spinner from '../UI/Spinner';
-import { BooksContext } from '../context/BooksContext';
 
-const MainPage = () => {
+const MainPage = ({ fetchedBooks, onBooksFetched, onSetUserShelf }) => {
   const [input, setInput] = useState('');
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);
-
-  const { fetchedBooks, setFetchedBooks, setUserShelf } = useContext(BooksContext);
 
   useEffect(() => {
     axios
@@ -26,12 +26,12 @@ const MainPage = () => {
         const modifiedData = dataValues.map((item, index) => {
           return { ...item, firebaseId: dataKeys[index] };
         });
-        setUserShelf(modifiedData);
+        onSetUserShelf(modifiedData);
       })
       .catch(console.error);
-  }, [setUserShelf]);
-  
-  const fetchBooks = (input) => {
+  }, [onSetUserShelf]);
+
+  function fetchBooks(input) {
     if (input) {
       const inputArray = input.split(',');
       const searchQuery = inputArray.join('+');
@@ -43,29 +43,29 @@ const MainPage = () => {
           console.log(data);
           if (data.items) {
             const items = data.items;
-            setFetchedBooks([...items]);
+            onBooksFetched([...items]);
           } else {
-            setFetchedBooks([]);
+            onBooksFetched([]);
           }
           setLoadingResults(false);
         })
         .then(console.error);
     }
-  };
+  }
 
-  const onChangeHandler = (e) => {
+  function onChangeHandler(e) {
     const inputValue = e.target.value;
     setInput((prevInput) => (prevInput = inputValue));
-  };
+  }
 
-  const onSubmitHandler = (e) => {
+  function onSubmitHandler(e) {
     e.preventDefault();
     if (input) {
       setLoadingResults(true);
       setShowSearchedResults(true);
       fetchBooks(input);
     }
-  };
+  }
 
   return (
     <div className={classes.MainPage}>
@@ -99,4 +99,18 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+const mapStateToProps = (state) => {
+  return {
+    fetchedBooks: state.books.fetchedBooks,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onBooksFetched: (fetchedBooks) =>
+      dispatch(actions.setFetchedBooks(fetchedBooks)),
+    onSetUserShelf: (book) => dispatch(actions.setUserShelf(book)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

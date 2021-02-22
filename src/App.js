@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import MainPage from './components/MainPage/MainPage';
-import Book from './components/Book';
-import BooksContextProvider from './components/context/BooksContext';
-import Shelf from './components/Shelf';
-import SignupForm from './components/SignupForm/SignupForm';
-import NavBar from './components/UI/NavBar/NavBar';
+import BooksContextProvider from 'context/BooksContext';
+
+import MainPage from 'components/MainPage/MainPage';
+import Book from 'components/Book/Book';
+import Shelf from 'components/Shelf/Shelf';
+import SignupForm from 'components/SignupForm/SignupForm';
+import NavBar from 'components/UI/NavBar/NavBar';
 
 const App = () => {
   return (

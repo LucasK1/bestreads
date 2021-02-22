@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Moment from 'react-moment';
 import axios from 'axios';
-import { BooksContext } from './context/BooksContext';
+
+import { BooksContext } from '../../context/BooksContext';
 
 import classes from './Book.module.scss';
-import Moment from 'react-moment';
-// import { Link } from 'react-router-dom';
 
 const Book = ({ history }) => {
   const { userShelf, setUserShelf } = useContext(BooksContext);
