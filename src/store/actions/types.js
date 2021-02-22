@@ -1,3 +1,7 @@
 export const SET_FETCHED_BOOKS = 'SET_FETCHED_BOOKS';
 export const SET_USER_SHELF = 'SET_USER_SHELF';
 export const DELETE_BOOK_FROM_SHELF = 'DELETE_BOOK_FROM_SHELF';
+
+export const AUTH_START = 'AUTH_START';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import axios from 'axios';
+import { axiosUserBooks } from 'axiosInstances';
 
 import * as actions from 'store/actions';
 
@@ -28,11 +29,8 @@ const Book = ({ history, userShelf, onSetUserShelf }) => {
     const compareBook = userShelf.find((item) => item.id === book.id);
     if (!compareBook) {
       onSetUserShelf([...userShelf, book]);
-      axios
-        .post(
-          'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json',
-          book
-        )
+      axiosUserBooks
+        .post('/books.json', book)
         .then((res) => console.log(res))
         .catch(console.error());
       setBookAlreadyExists(false);

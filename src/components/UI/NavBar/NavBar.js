@@ -16,6 +16,7 @@ const NavBar = () => {
         <NavItem path="/" title="Bestreads" />
         <ul className={classes.NavItems}>
           <NavItem path="/shelf" title="Shelf" />
+          <NavItem path="/signup" title="Sign Up" />
           {/* <NavItem
             dropdown
             title={

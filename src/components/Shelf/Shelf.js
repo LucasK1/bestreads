@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { axiosUserBooks } from 'axiosInstances';
 
 import * as actions from 'store/actions';
 
@@ -10,10 +10,8 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
   function deleteHandler(e, id) {
     e.preventDefault();
     onDeleteBookFromShelf(id);
-    axios
-      .delete(
-        `https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books/${id}.json`
-      )
+    axiosUserBooks
+      .delete(`/books/${id}.json`)
       .then((res) => console.log(res))
       .catch(console.error);
   }

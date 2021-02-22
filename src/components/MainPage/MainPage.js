@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { axiosUserBooks } from 'axiosInstances';
 
 import * as actions from 'store/actions';
 
@@ -15,10 +16,8 @@ const MainPage = ({ fetchedBooks, onBooksFetched, onSetUserShelf }) => {
   const [showSearchedResults, setShowSearchedResults] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(
-        'https://bestreads-5b430-default-rtdb.europe-west1.firebasedatabase.app/books.json'
-      )
+    axiosUserBooks
+      .get('/books.json')
       .then(({ data }) => {
         console.log(data, 'Dane');
         const dataValues = Object.values(data);
