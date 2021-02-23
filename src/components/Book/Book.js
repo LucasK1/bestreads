@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import axios from 'axios';
-import { axiosUserBooks } from 'axiosInstances';
 
 import * as actions from 'store/actions';
 
 import classes from './Book.module.scss';
 
-const Book = ({ history, userShelf, onSetUserShelf }) => {
+const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
   const [book, setBook] = useState(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
@@ -26,18 +25,18 @@ const Book = ({ history, userShelf, onSetUserShelf }) => {
   }, [id]);
 
   function addToShelfHandler() {
-    const compareBook = userShelf.find((item) => item.id === book.id);
-    if (!compareBook) {
-      onSetUserShelf([...userShelf, book]);
-      axiosUserBooks
-        .post('/books.json', book)
-        .then((res) => console.log(res))
-        .catch(console.error());
-      setBookAlreadyExists(false);
-      setBookAdded(true);
+    const isBookOnShelf = userShelf.find((item) => item.id === book.id);
+    if (!idToken) {
+      alert('Please log in');
     } else {
-      setBookAdded(false);
-      setBookAlreadyExists(true);
+      if (!isBookOnShelf) {
+        updateRemoteShelf(book, idToken);
+        setBookAlreadyExists(false);
+        setBookAdded(true);
+      } else {
+        setBookAdded(false);
+        setBookAlreadyExists(true);
+      }
     }
   }
 
@@ -86,16 +85,14 @@ const Book = ({ history, userShelf, onSetUserShelf }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    userShelf: state.books.userShelf,
-  };
-};
+const mapStateToProps = (state) => ({
+  userShelf: state.books.userShelf,
+  idToken: state.auth.idToken,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSetUserShelf: (book) => dispatch(actions.setUserShelf(book)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  updateRemoteShelf: (book, idToken) =>
+    dispatch(actions.updateRemoteShelf(book, idToken)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Book);

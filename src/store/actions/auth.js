@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as types from './types';
+import * as actions from './index';
 
 export const authStart = () => {
   return { type: types.AUTH_START };
@@ -40,6 +41,7 @@ export const auth = (email, password, isSignup) => (dispatch) => {
     .then(({ data }) => {
       console.log(data);
       dispatch(authSuccess(data.idToken, data.localId));
+      dispatch(actions.fetchBooksOnShelf(data.idToken));
       dispatch(checkAuthTimeout(data.expiresIn));
     })
     .catch((err) => {

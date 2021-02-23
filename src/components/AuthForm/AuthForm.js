@@ -79,18 +79,14 @@ const AuthForm = ({ onAuth, loading, error }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loading: state.auth.loading,
-    error: state.auth.error,
-  };
-};
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAuth: (email, password, isSignup) =>
-      dispatch(actions.auth(email, password, isSignup)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  onAuth: (email, password, isSignup) =>
+    dispatch(actions.auth(email, password, isSignup)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);

@@ -82,18 +82,14 @@ const MainPage = ({ fetchedBooks, onBooksFetched }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    fetchedBooks: state.books.fetchedBooks,
-  };
-};
+const mapStateToProps = (state) => ({
+  fetchedBooks: state.books.fetchedBooks,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onBooksFetched: (fetchedBooks) =>
-      dispatch(actions.setFetchedBooks(fetchedBooks)),
-    onSetUserShelf: (book) => dispatch(actions.setUserShelf(book)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  onBooksFetched: (fetchedBooks) =>
+    dispatch(actions.setFetchedBooks(fetchedBooks)),
+  onSetUserShelf: (book) => dispatch(actions.setUserShelf(book)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

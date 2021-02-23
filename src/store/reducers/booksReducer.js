@@ -12,10 +12,10 @@ const setFetchedBooks = (state, action) => {
   };
 };
 
-const setUsetShelf = (state, action) => {
+const setUserShelf = (state, action) => {
   return {
     ...state,
-    userShelf: [...action.book],
+    userShelf: [...action.shelf],
   };
 };
 
@@ -34,7 +34,7 @@ const reducer = (state = initialState, action) => {
     case types.SET_FETCHED_BOOKS:
       return setFetchedBooks(state, action);
     case types.SET_USER_SHELF:
-      return setUsetShelf(state, action);
+      return setUserShelf(state, action);
     case types.DELETE_BOOK_FROM_SHELF:
       return deleteBookFromShelf(state, action);
     default:

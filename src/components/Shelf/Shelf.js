@@ -54,16 +54,12 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    userShelf: state.books.userShelf,
-  };
-};
+const mapStateToProps = (state) => ({
+  userShelf: state.books.userShelf,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onDeleteBookFromShelf: (id) => dispatch(actions.deleteBookFromShelf(id)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  onDeleteBookFromShelf: (id) => dispatch(actions.deleteBookFromShelf(id)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shelf);
