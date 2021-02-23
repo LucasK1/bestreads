@@ -13,6 +13,18 @@ export const authFail = (error) => {
   return { type: types.AUTH_FAIL, error: error };
 };
 
+export const logout = () => {
+  return {
+    type: types.AUTH_LOGOUT,
+  };
+};
+
+export const checkAuthTimeout = (expirationTime) => (dispatch) => {
+  setTimeout(() => {
+    dispatch(logout());
+  }, expirationTime * 1000);
+};
+
 export const auth = (email, password, isSignup) => (dispatch) => {
   dispatch(authStart());
   const signupData = {
@@ -27,10 +39,10 @@ export const auth = (email, password, isSignup) => (dispatch) => {
     .post(url, signupData)
     .then(({ data }) => {
       console.log(data);
-      dispatch(authSuccess(data.idToken, data.userId));
+      dispatch(authSuccess(data.idToken, data.localId));
+      dispatch(checkAuthTimeout(data.expiresIn));
     })
     .catch((err) => {
-      dispatch(authFail(err));
-      console.error(err);
+      dispatch(authFail(err.response.data.error));
     });
 };

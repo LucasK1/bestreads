@@ -6,6 +6,7 @@ import * as actions from 'store/actions';
 
 import classes from './AuthForm.module.scss';
 import { connect } from 'react-redux';
+import Spinner from 'components/UI/Spinner';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -14,12 +15,19 @@ const SignupSchema = Yup.object().shape({
     .min(8, 'Password must be at least 8 characters'),
 });
 
-const AuthForm = ({ onAuth }) => {
+const AuthForm = ({ onAuth, loading, error }) => {
   const [isSignup, setIsSignup] = useState(true);
 
   const submitHandler = (email, password, isSignup) => {
     onAuth(email, password, isSignup);
   };
+
+  let errorMessage = null;
+  if (error) {
+    errorMessage = error.message.toLowerCase().split('_');
+    console.log(errorMessage);
+    errorMessage = errorMessage.join(' ');
+  }
 
   return (
     <>
@@ -65,8 +73,17 @@ const AuthForm = ({ onAuth }) => {
           </>
         )}
       </span>
+      {error && <p>{errorMessage}</p>}
+      {loading && <Spinner />}
     </>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -76,4 +93,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(AuthForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);

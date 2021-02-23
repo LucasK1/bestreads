@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { axiosUserBooks } from 'axiosInstances';
 
 import * as actions from 'store/actions';
 
@@ -10,25 +9,10 @@ import Spinner from 'components/UI/Spinner';
 
 import classes from './MainPage.module.scss';
 
-const MainPage = ({ fetchedBooks, onBooksFetched, onSetUserShelf }) => {
+const MainPage = ({ fetchedBooks, onBooksFetched }) => {
   const [input, setInput] = useState('');
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);
-
-  useEffect(() => {
-    axiosUserBooks
-      .get('/books.json')
-      .then(({ data }) => {
-        console.log(data, 'Dane');
-        const dataValues = Object.values(data);
-        const dataKeys = Object.keys(data);
-        const modifiedData = dataValues.map((item, index) => {
-          return { ...item, firebaseId: dataKeys[index] };
-        });
-        onSetUserShelf(modifiedData);
-      })
-      .catch(console.error);
-  }, [onSetUserShelf]);
 
   function fetchBooks(input) {
     if (input) {
