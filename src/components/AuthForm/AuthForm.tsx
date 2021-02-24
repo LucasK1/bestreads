@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import * as actions from 'store/actions';
+import { RootState } from 'types/StateTypes';
+
+import Spinner from 'components/UI/Spinner';
 
 import classes from './AuthForm.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import Spinner from 'components/UI/Spinner';
-import { RootState } from 'types/StateTypes';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -16,15 +17,19 @@ const SignupSchema = Yup.object().shape({
     .min(8, 'Password must be at least 8 characters'),
 });
 
-const AuthForm = () => {
+const AuthForm: FC = () => {
   const [isSignup, setIsSignup] = useState(true);
 
-  const loading = useSelector((state: RootState) => state.auth.loading)
-  const error = useSelector((state: RootState) => state.auth.error)
+  const loading = useSelector((state: RootState) => state.auth.loading);
+  const error = useSelector((state: RootState) => state.auth.error);
 
   const dispatch = useDispatch();
 
-  const submitHandler = (email: string, password: string, isSignup: boolean) => {
+  const submitHandler = (
+    email: string,
+    password: string,
+    isSignup: boolean
+  ) => {
     dispatch(actions.auth(email, password, isSignup));
   };
 

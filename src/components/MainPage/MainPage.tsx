@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -10,7 +10,7 @@ import Spinner from 'components/UI/Spinner';
 import classes from './MainPage.module.scss';
 import { RootState } from 'types/StateTypes';
 
-const MainPage = () => {
+const MainPage: FC = () => {
   const [input, setInput] = useState('');
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);

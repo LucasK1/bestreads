@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import axios from 'axios';
@@ -10,11 +10,8 @@ import { RouteComponentProps } from 'react-router';
 
 import classes from './Book.module.scss';
 
-interface Props {
-  history: RouteComponentProps;
-}
 
-const Book = ({ history }: Props) => {
+const Book: FC<RouteComponentProps> = ({ history }) => {
   const [book, setBook] = useState<BookType | null>(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import NavItem from './NavItem/NavItem';
@@ -8,7 +8,7 @@ import { RootState } from 'types/StateTypes';
 
 import classes from './NavBar.module.scss';
 
-const NavBar = (): ReactElement => {
+const NavBar: FC = () => {
   const idToken = useSelector((state: RootState) => state.auth.idToken);
   return (
     <nav className={classes.NavBar}>

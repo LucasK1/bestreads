@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { axiosUserBooks } from 'axiosInstances';
 
@@ -7,7 +7,7 @@ import * as actions from 'store/actions';
 
 import classes from './Shelf.module.scss';
 
-const Shelf = (): ReactElement => {
+const Shelf: FC = () => {
   const userShelf = useSelector((state: RootState) => state.books.userShelf);
   const dispatch = useDispatch();
 

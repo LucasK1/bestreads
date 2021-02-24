@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
+import React, { FC } from 'react';
 
 import classes from './Spinner.module.css';
 
-const Spinner = (): ReactElement => {
+const Spinner: FC = () => {
   return (
     <div className={classes.ldsCircle}>
       <div></div>

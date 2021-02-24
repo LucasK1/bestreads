@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import { BookType } from 'types/BookTypes';
 
@@ -10,10 +10,10 @@ interface Props {
   books: BookType[];
 }
 
-const SearchedBooks = ({ books }: Props): ReactElement => {
-  const moreInfoHandler = _.debounce((e, id) => {
-    console.log(books.filter((book) => book.id === id)[0]);
-  }, 500);
+const SearchedBooks: FC<Props> = ({ books }) => {
+  // const moreInfoHandler = _.debounce((e, id) => {
+  //   console.log(books.filter((book) => book.id === id)[0]);
+  // }, 500);
 
   return (
     <div className={classes.SearchedBooks}>
@@ -25,7 +25,7 @@ const SearchedBooks = ({ books }: Props): ReactElement => {
                 src={book.volumeInfo.imageLinks.smallThumbnail}
                 className={classes.bookCover}
                 alt=""
-                onMouseEnter={(e) => moreInfoHandler(e, book.id)}
+                // onMouseEnter={(e) => moreInfoHandler(e, book.id)}
               />
             ) : (
               <div className={classes.noCover} key={book.id}>
