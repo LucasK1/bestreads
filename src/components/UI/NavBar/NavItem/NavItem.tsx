@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import classes from './NavItem.module.scss';
 
-const NavItem = ({ path, title }) => {
+interface Props {
+  path: string;
+  title: string;
+}
+
+const NavItem = ({ path, title }: Props): ReactElement => {
   return (
     <li className={classes.NavItem}>
       {

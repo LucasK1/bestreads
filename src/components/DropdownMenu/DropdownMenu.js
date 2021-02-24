@@ -38,7 +38,7 @@ const DropdownMenu = () => {
         <div className={classes.menu}>
           <DropdownItem>My Profile</DropdownItem>
           <DropdownItem clicked={() => setActiveMenu('settings')}>
-            Settings>>
+            {'Settings>>'}
           </DropdownItem>
         </div>
       </CSSTransition>

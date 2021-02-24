@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'react-moment';
 import axios from 'axios';
 
 import * as actions from 'store/actions';
+import { RootState } from 'types/StateTypes';
+import { BookType } from 'types/BookTypes';
+import { RouteComponentProps } from 'react-router';
 
 import classes from './Book.module.scss';
 
-const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
-  const [book, setBook] = useState(null);
+interface Props {
+  history: RouteComponentProps;
+}
+
+const Book = ({ history }: Props) => {
+  const [book, setBook] = useState<BookType | null>(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
+
+  const idToken = useSelector((state: RootState) => state.auth.idToken);
+  const userShelf = useSelector((state: RootState) => state.books.userShelf);
+
+  const dispatch = useDispatch();
 
   const id = history.location.pathname.replace('/', '');
 
@@ -25,12 +37,15 @@ const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
   }, [id]);
 
   function addToShelfHandler() {
-    const isBookOnShelf = userShelf.find((item) => item.id === book.id);
+    let isBookOnShelf: BookType | undefined;
+    if (book) {
+      isBookOnShelf = userShelf.find((item) => item.id === book.id);
+    }
     if (!idToken) {
       alert('Please log in');
     } else {
-      if (!isBookOnShelf) {
-        updateRemoteShelf(book, idToken);
+      if (!isBookOnShelf && book) {
+        dispatch(actions.updateRemoteShelf(book, idToken));
         setBookAlreadyExists(false);
         setBookAdded(true);
       } else {
@@ -40,6 +55,13 @@ const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
     }
   }
 
+  const bookDescription =
+    book && book.volumeInfo.description ? (
+      <p>{book.volumeInfo.description}</p>
+    ) : (
+      ''
+    );
+
   return (
     <div className={classes.main}>
       {book ? (
@@ -48,7 +70,13 @@ const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
             book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'unknown'
           }`}</h1>
           <div className={classes.bookImage}>
-            <img src={book.volumeInfo.imageLinks.thumbnail} alt="" />
+            <img
+              src={
+                book.volumeInfo.imageLinks &&
+                book.volumeInfo.imageLinks.thumbnail
+              }
+              alt=""
+            />
             <span>{}</span>
           </div>
           <div className={classes.description}>
@@ -59,10 +87,7 @@ const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
                 date={book.volumeInfo.publishedDate}
               />
             </p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: book.volumeInfo.description,
-              }}></p>
+            {bookDescription}
           </div>
           <button className={classes.add} onClick={addToShelfHandler}>
             Add to your shelf
@@ -85,14 +110,4 @@ const Book = ({ history, userShelf, updateRemoteShelf, idToken }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userShelf: state.books.userShelf,
-  idToken: state.auth.idToken,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateRemoteShelf: (book, idToken) =>
-    dispatch(actions.updateRemoteShelf(book, idToken)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Book);
+export default Book;

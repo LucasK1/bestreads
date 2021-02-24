@@ -1,25 +1,36 @@
+import { BookState } from '../../types/StateTypes';
 import * as types from '../actions/types';
 
-const initialState = {
+export interface BookAction {
+  type: string;
+  fetchedBooks?: any[];
+  shelf?: any[];
+  id?: string;
+}
+
+const initialState: BookState = {
   fetchedBooks: [],
   userShelf: [],
 };
 
-const setFetchedBooks = (state, action) => {
+const setFetchedBooks = (state: BookState, action: types.SetFetchedBooks) => {
   return {
     ...state,
     fetchedBooks: action.fetchedBooks,
   };
 };
 
-const setUserShelf = (state, action) => {
+const setUserShelf = (state: BookState, action: types.SetUserShelf) => {
   return {
     ...state,
     userShelf: [...action.shelf],
   };
 };
 
-const deleteBookFromShelf = (state, action) => {
+const deleteBookFromShelf = (
+  state: BookState,
+  action: types.DeleteBookFromShelf
+) => {
   const newShelf = state.userShelf.filter(
     (book) => book.firebaseId !== action.id
   );
@@ -29,7 +40,10 @@ const deleteBookFromShelf = (state, action) => {
   };
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (
+  state: BookState = initialState,
+  action: types.ActionTypes
+): BookState => {
   switch (action.type) {
     case types.SET_FETCHED_BOOKS:
       return setFetchedBooks(state, action);

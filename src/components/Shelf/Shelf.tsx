@@ -1,15 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { ReactElement } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { axiosUserBooks } from 'axiosInstances';
 
+import { RootState } from 'types/StateTypes';
 import * as actions from 'store/actions';
 
 import classes from './Shelf.module.scss';
 
-const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
-  function deleteHandler(e, id) {
-    e.preventDefault();
-    onDeleteBookFromShelf(id);
+const Shelf = (): ReactElement => {
+  const userShelf = useSelector((state: RootState) => state.books.userShelf);
+  const dispatch = useDispatch();
+
+  function deleteHandler(id: string) {
+    dispatch(actions.deleteBookFromShelf(id));
+
     axiosUserBooks
       .delete(`/books/${id}.json`)
       .then((res) => console.log(res))
@@ -26,7 +30,10 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
             return (
               <li key={book.firebaseId} className={classes.singleBook}>
                 <img
-                  src={book.volumeInfo.imageLinks.smallThumbnail}
+                  src={
+                    book.volumeInfo.imageLinks &&
+                    book.volumeInfo.imageLinks.smallThumbnail
+                  }
                   alt=""
                   height="75"
                   width="50"
@@ -40,7 +47,7 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
                 </span>
                 <button
                   className={classes.deleteButton}
-                  onClick={(e) => deleteHandler(e, book.firebaseId)}>
+                  onClick={() => deleteHandler(book.firebaseId)}>
                   Delete
                 </button>
               </li>
@@ -54,12 +61,4 @@ const Shelf = ({ userShelf, onDeleteBookFromShelf }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userShelf: state.books.userShelf,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onDeleteBookFromShelf: (id) => dispatch(actions.deleteBookFromShelf(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Shelf);
+export default Shelf;

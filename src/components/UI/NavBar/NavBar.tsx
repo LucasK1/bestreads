@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-
-import * as actions from 'store/actions';
+import React, { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 
 import NavItem from './NavItem/NavItem';
+import { RootState } from 'types/StateTypes';
 // import { ReactComponent as CaretIcon } from '../../../assets/caret.svg';
 // import DropdownMenu from '../../DropdownMenu/DropdownMenu';
 
 import classes from './NavBar.module.scss';
 
-const NavBar = ({ idToken, logout }) => {
+const NavBar = (): ReactElement => {
+  const idToken = useSelector((state: RootState) => state.auth.idToken);
   return (
     <nav className={classes.NavBar}>
       <div className={classes.Container}>
@@ -38,11 +38,4 @@ const NavBar = ({ idToken, logout }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  idToken: state.auth.idToken,
-});
-const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(actions.logout()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default NavBar;

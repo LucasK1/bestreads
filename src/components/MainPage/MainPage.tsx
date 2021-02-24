@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 import * as actions from 'store/actions';
@@ -8,13 +8,19 @@ import SearchedBooks from 'components/SearchedBooks/SearchedBooks';
 import Spinner from 'components/UI/Spinner';
 
 import classes from './MainPage.module.scss';
+import { RootState } from 'types/StateTypes';
 
-const MainPage = ({ fetchedBooks, onBooksFetched }) => {
+const MainPage = () => {
   const [input, setInput] = useState('');
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);
 
-  function fetchBooks(input) {
+  const fetchedBooks = useSelector(
+    (state: RootState) => state.books.fetchedBooks
+  );
+  const dispatch = useDispatch();
+
+  function fetchBooks(input: string) {
     if (input) {
       const inputArray = input.split(',');
       const searchQuery = inputArray.join('+');
@@ -26,9 +32,9 @@ const MainPage = ({ fetchedBooks, onBooksFetched }) => {
           console.log(data);
           if (data.items) {
             const items = data.items;
-            onBooksFetched([...items]);
+            dispatch(actions.setFetchedBooks([...items]));
           } else {
-            onBooksFetched([]);
+            dispatch(actions.setFetchedBooks([]));
           }
           setLoadingResults(false);
         })
@@ -36,12 +42,12 @@ const MainPage = ({ fetchedBooks, onBooksFetched }) => {
     }
   }
 
-  function onChangeHandler(e) {
-    const inputValue = e.target.value;
+  function onChangeHandler(e: ChangeEvent) {
+    const inputValue = (e.target as HTMLInputElement).value;
     setInput((prevInput) => (prevInput = inputValue));
   }
 
-  function onSubmitHandler(e) {
+  function onSubmitHandler(e: FormEvent) {
     e.preventDefault();
     if (input) {
       setLoadingResults(true);
@@ -82,14 +88,4 @@ const MainPage = ({ fetchedBooks, onBooksFetched }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  fetchedBooks: state.books.fetchedBooks,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onBooksFetched: (fetchedBooks) =>
-    dispatch(actions.setFetchedBooks(fetchedBooks)),
-  onSetUserShelf: (book) => dispatch(actions.setUserShelf(book)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;

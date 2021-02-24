@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import MainPage from 'components/MainPage/MainPage';
@@ -8,7 +8,7 @@ import AuthForm from 'components/AuthForm/AuthForm';
 import NavBar from 'components/UI/NavBar/NavBar';
 import Logout from 'components/Logout/Logout';
 
-const App = () => {
+const App = (): ReactElement => {
   return (
     <BrowserRouter>
       <div className="main-container">
