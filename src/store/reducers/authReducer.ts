@@ -1,13 +1,6 @@
 import { AuthState } from 'types/StateTypes';
 import * as types from '../actions/types';
 
-export interface AuthAction {
-  type: string;
-  idToken?: string;
-  userId?: string;
-  error?: { message: string };
-}
-
 const initialState: AuthState = {
   idToken: null,
   userId: null,

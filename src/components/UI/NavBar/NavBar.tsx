@@ -9,7 +9,8 @@ import { RootState } from 'types/StateTypes';
 import classes from './NavBar.module.scss';
 
 const NavBar: FC = () => {
-  const idToken = useSelector((state: RootState) => state.auth.idToken);
+  const { idToken } = useSelector((state: RootState) => state.auth);
+
   return (
     <nav className={classes.NavBar}>
       <div className={classes.Container}>

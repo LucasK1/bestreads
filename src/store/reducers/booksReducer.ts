@@ -1,13 +1,6 @@
 import { BookState } from '../../types/StateTypes';
 import * as types from '../actions/types';
 
-export interface BookAction {
-  type: string;
-  fetchedBooks?: any[];
-  shelf?: any[];
-  id?: string;
-}
-
 const initialState: BookState = {
   fetchedBooks: [],
   userShelf: [],

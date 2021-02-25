@@ -5,4 +5,11 @@ export {
   fetchBooksOnShelf,
   updateRemoteShelf,
 } from './books';
-export { auth, authStart, authSuccess, authFail, logout } from './auth';
+export {
+  auth,
+  authStart,
+  authSuccess,
+  authFail,
+  logout,
+  authCheckState,
+} from './auth';

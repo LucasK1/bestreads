@@ -3,21 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 import * as actions from 'store/actions';
+import { RootState } from 'types/StateTypes';
 
 import SearchedBooks from 'components/SearchedBooks/SearchedBooks';
 import Spinner from 'components/UI/Spinner';
 
 import classes from './MainPage.module.scss';
-import { RootState } from 'types/StateTypes';
 
 const MainPage: FC = () => {
   const [input, setInput] = useState('');
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);
 
-  const fetchedBooks = useSelector(
-    (state: RootState) => state.books.fetchedBooks
-  );
+  const { fetchedBooks } = useSelector((state: RootState) => state.books);
   const dispatch = useDispatch();
 
   function fetchBooks(input: string) {
@@ -38,7 +36,7 @@ const MainPage: FC = () => {
           }
           setLoadingResults(false);
         })
-        .then(console.error);
+        .catch(console.error);
     }
   }
 

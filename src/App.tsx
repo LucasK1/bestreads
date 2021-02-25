@@ -1,5 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import * as actions from 'store/actions';
 
 import MainPage from 'components/MainPage/MainPage';
 import Book from 'components/Book/Book';
@@ -9,6 +12,12 @@ import NavBar from 'components/UI/NavBar/NavBar';
 import Logout from 'components/Logout/Logout';
 
 const App: FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.authCheckState());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <div className="main-container">
@@ -16,8 +25,8 @@ const App: FC = () => {
         <Switch>
           <Route path="/" exact component={MainPage} />
           <Route path="/shelf" exact component={Shelf} />
-          <Route path="/signup" exact component={AuthForm} />
           <Route path="/logout" exact component={Logout} />
+          <Route path="/signup" component={AuthForm} />
           <Route path="/:id" exact component={Book} />
         </Switch>
       </div>

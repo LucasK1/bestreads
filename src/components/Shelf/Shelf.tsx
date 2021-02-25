@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { axiosUserBooks } from 'axiosInstances';
 
@@ -8,8 +8,13 @@ import * as actions from 'store/actions';
 import classes from './Shelf.module.scss';
 
 const Shelf: FC = () => {
-  const userShelf = useSelector((state: RootState) => state.books.userShelf);
+  const { userShelf } = useSelector((state: RootState) => state.books);
+  const { idToken, userId } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.fetchBooksOnShelf(idToken, userId));
+  }, [dispatch, idToken, userId]);
 
   function deleteHandler(id: string) {
     dispatch(actions.deleteBookFromShelf(id));

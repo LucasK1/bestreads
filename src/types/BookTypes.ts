@@ -14,4 +14,5 @@ export interface BookType {
 
 export interface ShelfBookType extends BookType {
   firebaseId: string;
+  userId: string;
 }

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +9,7 @@ import { RootState } from 'types/StateTypes';
 import Spinner from 'components/UI/Spinner';
 
 import classes from './AuthForm.module.scss';
+import { Redirect, RouteComponentProps } from 'react-router';
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -17,13 +18,17 @@ const SignupSchema = Yup.object().shape({
     .min(8, 'Password must be at least 8 characters'),
 });
 
-const AuthForm: FC = () => {
+const AuthForm: FC<RouteComponentProps> = ({ history }) => {
   const [isSignup, setIsSignup] = useState(true);
 
-  const loading = useSelector((state: RootState) => state.auth.loading);
-  const error = useSelector((state: RootState) => state.auth.error);
-
+  const { loading, error, idToken } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(history, 'auth');
+  });
 
   const submitHandler = (
     email: string,
@@ -40,8 +45,18 @@ const AuthForm: FC = () => {
     errorMessage = errorMessage.join(' ');
   }
 
+  let authRedirect = null;
+  if (idToken) {
+    if (history.location.search === '?fromBook') {
+      history.goBack();
+    } else {
+      authRedirect = <Redirect to="/" />;
+    }
+  }
+
   return (
     <>
+      {authRedirect}
       <Formik
         initialValues={{
           email: '',

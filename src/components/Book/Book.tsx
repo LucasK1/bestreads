@@ -10,14 +10,13 @@ import { RouteComponentProps } from 'react-router';
 
 import classes from './Book.module.scss';
 
-
 const Book: FC<RouteComponentProps> = ({ history }) => {
   const [book, setBook] = useState<BookType | null>(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
 
-  const idToken = useSelector((state: RootState) => state.auth.idToken);
-  const userShelf = useSelector((state: RootState) => state.books.userShelf);
+  const { idToken, userId } = useSelector((state: RootState) => state.auth);
+  const { userShelf } = useSelector((state: RootState) => state.books);
 
   const dispatch = useDispatch();
 
@@ -34,15 +33,15 @@ const Book: FC<RouteComponentProps> = ({ history }) => {
   }, [id]);
 
   function addToShelfHandler() {
-    let isBookOnShelf: BookType | undefined;
-    if (book) {
-      isBookOnShelf = userShelf.find((item) => item.id === book.id);
-    }
     if (!idToken) {
-      alert('Please log in');
+      history.push('/signup?fromBook');
     } else {
+      let isBookOnShelf: BookType | undefined;
+      if (book) {
+        isBookOnShelf = userShelf.find((item) => item.id === book.id);
+      }
       if (!isBookOnShelf && book) {
-        dispatch(actions.updateRemoteShelf(book, idToken));
+        dispatch(actions.updateRemoteShelf(book, idToken, userId));
         setBookAlreadyExists(false);
         setBookAdded(true);
       } else {
@@ -86,9 +85,15 @@ const Book: FC<RouteComponentProps> = ({ history }) => {
             </p>
             {bookDescription}
           </div>
-          <button className={classes.add} onClick={addToShelfHandler}>
-            Add to your shelf
-          </button>
+          {idToken ? (
+            <button className={classes.add} onClick={addToShelfHandler}>
+              Add to your shelf
+            </button>
+          ) : (
+            <button className={classes.add} onClick={addToShelfHandler}>
+              Sign up to continue
+            </button>
+          )}
           {bookAdded ? (
             <p style={{ color: '#0f6', gridArea: 'alert' }}>
               You added a new book!

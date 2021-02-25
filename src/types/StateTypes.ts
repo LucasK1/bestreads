@@ -8,7 +8,7 @@ export interface BookState {
 export interface AuthState {
   idToken: string | null;
   userId: string | null;
-  error: {message: string} | null;
+  error: Error | null;
   loading: boolean;
 }
 

@@ -1,3 +1,4 @@
-export interface Error {
-  message: string;
-}
+// export interface Error {
+//   message: string;
+// }
+export {};

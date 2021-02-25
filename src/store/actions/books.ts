@@ -1,10 +1,11 @@
-import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
 import { axiosUserBooks } from '../../axiosInstances';
 import { BookType } from '../../types/BookTypes';
 import * as types from './types';
 
-export const setFetchedBooks = (fetchedBooks: BookType[]): types.SetFetchedBooks => {
+export const setFetchedBooks = (
+  fetchedBooks: BookType[]
+): types.SetFetchedBooks => {
   return { type: types.SET_FETCHED_BOOKS, fetchedBooks: fetchedBooks };
 };
 
@@ -16,9 +17,12 @@ export const deleteBookFromShelf = (id: string): types.DeleteBookFromShelf => {
   return { type: types.DELETE_BOOK_FROM_SHELF, id: id };
 };
 
-export const fetchBooksOnShelf = (idToken: string) => (dispatch: Dispatch) => {
+export const fetchBooksOnShelf = (
+  idToken: string | null,
+  userId: string | null
+) => (dispatch: Dispatch) => {
   axiosUserBooks
-    .get(`/books.json?auth=${idToken}`)
+    .get(`/books.json?auth=${idToken}&orderBy="userId"&equalTo="${userId}"`)
     .then(({ data }) => {
       console.log(data, 'Dane');
       const dataValues: Object[] = Object.values(data);
@@ -33,11 +37,14 @@ export const fetchBooksOnShelf = (idToken: string) => (dispatch: Dispatch) => {
     .catch(console.error);
 };
 
-export const updateRemoteShelf = (book: {}, idToken: string) => (
-  dispatch: Dispatch
-) => {
+export const updateRemoteShelf = (
+  book: BookType,
+  idToken: string,
+  userId: string | null
+) => (dispatch: Dispatch) => {
+  const dataToSend = { ...book, userId: userId };
   axiosUserBooks
-    .post(`/books.json?auth=${idToken}`, book)
-    .then(() => dispatch<any>(fetchBooksOnShelf(idToken)))
-    .catch((error: AxiosError) => console.error(error));
+    .post(`/books.json?auth=${idToken}`, dataToSend)
+    .then(() => dispatch<any>(fetchBooksOnShelf(idToken, userId)))
+    .catch(console.error);
 };
