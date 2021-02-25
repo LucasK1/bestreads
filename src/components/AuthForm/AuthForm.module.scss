@@ -1,12 +1,49 @@
+.container {
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 .form {
+  height: 250px;
   display: flex;
   flex-direction: column;
-  max-width: 300px;
-  gap: 4px;
+  justify-content: space-between;
+  padding-top: 100px;
+  margin: 0 auto;
+  max-width: 362px;
+}
+
+.input {
+  height: 52px;
+  font-size: 1.1rem;
+}
+
+.submitButton {
+  height: 52px;
+  font-size: 1.1rem;
 }
 
 .errorMessage {
   font-size: 0.6rem;
   text-align: right;
   color: #f00;
+}
+
+.ifSignedup {
+  margin-top: 10px;
+  text-align: center;
+  &__link {
+    margin: 0 0 0 12px;
+    color: blue;
+    text-decoration: underline;
+    font-size: 1rem;
+    border: none;
+    padding: 0;
+    background-color: white;
+    &:hover {
+      cursor: pointer;
+      color: lightskyblue;
+    }
+  }
 }

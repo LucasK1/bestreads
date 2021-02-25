@@ -16,6 +16,10 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .required('Required')
     .min(8, 'Password must be at least 8 characters'),
+  passwordConfirmation: Yup.string().oneOf(
+    [Yup.ref('password'), null],
+    'Passwords must match'
+  ),
 });
 
 const AuthForm: FC<RouteComponentProps> = ({ history }) => {
@@ -55,7 +59,7 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
   }
 
   return (
-    <>
+    <main className={classes.container}>
       {authRedirect}
       <Formik
         initialValues={{
@@ -68,40 +72,75 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
         }>
         {() => (
           <Form className={classes.form}>
-            <label htmlFor="email">Email</label>
-            <Field name="email" type="email" />
+            {/* <label htmlFor="email">Email</label> */}
+            <Field
+              name="email"
+              type="email"
+              className={classes.input}
+              placeholder="Email"
+            />
             <ErrorMessage
               component="span"
               name="email"
               className={classes.errorMessage}
             />
-            <label htmlFor="password">Password</label>
-            <Field name="password" type="password" />
+            {/* <label htmlFor="password">Password</label> */}
+            <Field
+              name="password"
+              type="password"
+              className={classes.input}
+              placeholder="Password"
+            />
             <ErrorMessage
               component="span"
               name="password"
               className={classes.errorMessage}
             />
-            <button type="submit">{isSignup ? 'Sign up' : 'Sign in'}</button>
+            {isSignup ? (
+              <>
+                <Field
+                  name="passwordConfirmation"
+                  type="password"
+                  className={classes.input}
+                  placeholder="Confirm the password"
+                />
+                <ErrorMessage
+                  component="span"
+                  name="passwordConfirmation"
+                  className={classes.errorMessage}
+                />
+              </>
+            ) : null}
+            <button type="submit" className={classes.submitButton}>
+              {isSignup ? 'Sign up' : 'Sign in'}
+            </button>
           </Form>
         )}
       </Formik>
-      <span>
+      <span className={classes.ifSignedup}>
         {isSignup ? (
           <>
             Already Signed up?
-            <button onClick={() => setIsSignup(false)}>Sign in</button>
+            <button
+              onClick={() => setIsSignup(false)}
+              className={classes.ifSignedup__link}>
+              Sign in
+            </button>
           </>
         ) : (
           <>
             Don't have an account?
-            <button onClick={() => setIsSignup(true)}>Sign up</button>
+            <button
+              onClick={() => setIsSignup(true)}
+              className={classes.ifSignedup__link}>
+              Sign up
+            </button>
           </>
         )}
       </span>
       {error && <p>{errorMessage}</p>}
       {loading && <Spinner />}
-    </>
+    </main>
   );
 };
 
