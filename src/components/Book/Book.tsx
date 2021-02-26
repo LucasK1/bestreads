@@ -20,7 +20,7 @@ const Book: FC<RouteComponentProps> = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const id = history.location.pathname.replace('/', '');
+  const id = history.location.pathname.replace('/book/', '');
 
   useEffect(() => {
     axios

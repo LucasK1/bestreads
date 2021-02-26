@@ -27,7 +27,7 @@ const App: FC = () => {
           <Route path="/shelf" exact component={Shelf} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/signup" component={AuthForm} />
-          <Route path="/:id" exact component={Book} />
+          <Route path="/book/:id" exact component={Book} />
         </Switch>
       </div>
     </BrowserRouter>

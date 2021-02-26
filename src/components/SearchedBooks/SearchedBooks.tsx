@@ -19,7 +19,7 @@ const SearchedBooks: FC<Props> = ({ books }) => {
     <div className={classes.SearchedBooks}>
       {books.length ? (
         books.map((book) => (
-          <NavLink to={`/${book.id}`} key={book.id}>
+          <NavLink to={`/book/${book.id}`} key={book.id}>
             {book.volumeInfo.imageLinks ? (
               <img
                 src={book.volumeInfo.imageLinks.smallThumbnail}

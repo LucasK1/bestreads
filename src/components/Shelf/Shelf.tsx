@@ -6,6 +6,7 @@ import { RootState } from 'types/StateTypes';
 import * as actions from 'store/actions';
 
 import classes from './Shelf.module.scss';
+import { Link } from 'react-router-dom';
 
 const Shelf: FC = () => {
   const { userShelf } = useSelector((state: RootState) => state.books);
@@ -34,15 +35,17 @@ const Shelf: FC = () => {
             console.log(book, 'book');
             return (
               <li key={book.firebaseId} className={classes.singleBook}>
-                <img
-                  src={
-                    book.volumeInfo.imageLinks &&
-                    book.volumeInfo.imageLinks.smallThumbnail
-                  }
-                  alt=""
-                  height="75"
-                  width="50"
-                />
+                <Link to={`/book/${book.id}`}>
+                  <img
+                    src={
+                      book.volumeInfo.imageLinks &&
+                      book.volumeInfo.imageLinks.smallThumbnail
+                    }
+                    alt=""
+                    height="75"
+                    width="50"
+                  />
+                </Link>
                 <span className={classes.bookTitle}>
                   {`${book.volumeInfo.title} by ${
                     book.volumeInfo.authors

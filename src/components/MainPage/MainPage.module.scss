@@ -1,15 +1,16 @@
 .MainPage {
-  height: 100vh;
+  padding-top: 8vh;
+  height: 92vh;
   width: 100%;
-  // background: #ebeaf4;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  // background-image: url(require('./assets/1.jpg'));
+  background: url('../../assets/1.jpg');
 }
 
 .header {
+  color: #fff;
   height: 20vh;
   text-align: center;
 }
