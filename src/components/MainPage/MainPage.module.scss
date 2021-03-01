@@ -6,7 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: url('../../assets/1.jpg');
+  background: url('../../assets/1.jpg') no-repeat center;
+  background-size: cover;
 }
 
 .header {
