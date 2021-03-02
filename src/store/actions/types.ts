@@ -10,19 +10,6 @@ export const AUTH_FAIL = 'AUTH_FAIL';
 
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
-// export type ActionTypes =
-//   | { type: typeof SET_FETCHED_BOOKS; fetchedBooks: any[] }
-//   | { type: typeof AUTH_SUCCESS; userId: string; idToken: string }
-//   | { type: typeof SET_USER_SHELF; shelf: any[] }
-//   | { type: typeof DELETE_BOOK_FROM_SHELF; id: string }
-//   | { type: typeof FETCH_BOOKS_ON_SHELF; id: string }
-//   | { type: typeof AUTH_START }
-//   | { type: typeof AUTH_FAIL; error: {} }
-//   | { type: typeof AUTH_LOGOUT };
-
-export type ActionTypes = SetFetchedBooks | SetUserShelf | DeleteBookFromShelf;
-
-export type AuthActionTypes = AuthStart | AuthSuccess | AuthFail | AuthLogout;
 
 export interface SetFetchedBooks {
   type: typeof SET_FETCHED_BOOKS;
@@ -51,3 +38,7 @@ export interface AuthFail {
 export interface AuthLogout {
   type: typeof AUTH_LOGOUT;
 }
+
+export type ActionTypes = SetFetchedBooks | SetUserShelf | DeleteBookFromShelf;
+
+export type AuthActionTypes = AuthStart | AuthSuccess | AuthFail | AuthLogout;

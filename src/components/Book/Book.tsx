@@ -53,7 +53,7 @@ const Book: FC<RouteComponentProps> = ({ history }) => {
 
   const bookDescription =
     book && book.volumeInfo.description ? (
-      <p>{book.volumeInfo.description}</p>
+      <p dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }}></p>
     ) : (
       ''
     );
