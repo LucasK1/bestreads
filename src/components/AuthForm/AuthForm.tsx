@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -11,7 +11,7 @@ import Spinner from 'components/UI/Spinner';
 import classes from './AuthForm.module.scss';
 import { Redirect, RouteComponentProps } from 'react-router';
 
-const SignupSchema = Yup.object().shape({
+const AuthSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
     .required('Required')
@@ -29,10 +29,6 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(history, 'auth');
-  });
 
   const submitHandler = (
     email: string,
@@ -66,7 +62,7 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
           email: '',
           password: '',
         }}
-        validationSchema={SignupSchema}
+        validationSchema={AuthSchema}
         onSubmit={({ email, password }) =>
           submitHandler(email, password, isSignup)
         }>
