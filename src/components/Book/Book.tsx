@@ -53,18 +53,9 @@ const Book: FC = () => {
     }
   }
 
-<<<<<<< HEAD
   function readStateHandler(e: ChangeEvent) {
     setReadState((e.target as HTMLInputElement).value);
   }
-=======
-  const bookDescription =
-    book && book.volumeInfo.description ? (
-      <p dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }}></p>
-    ) : (
-      ''
-    );
->>>>>>> 668d11a65096952c6ea08ff2b03a186cb0701276
 
   return (
     <div className={classes.main}>
