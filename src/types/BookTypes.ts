@@ -13,6 +13,7 @@ export interface BookType {
 }
 
 export interface ShelfBookType extends BookType {
+  readState: string;
   firebaseId: string;
   userId: string;
 }

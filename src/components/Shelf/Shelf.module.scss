@@ -7,22 +7,3 @@
 .bookList {
   list-style: none;
 }
-.singleBook {
-  display: flex;
-  align-items: flex-start;
-  gap: 30px;
-}
-.bookTitle {
-  font-size: 1.1rem;
-}
-.deleteButton {
-  border: none;
-  color: #f00;
-  text-decoration: underline;
-  background-color: #fff;
-
-  &:hover {
-    cursor: pointer;
-    color: #fa0;
-  }
-}

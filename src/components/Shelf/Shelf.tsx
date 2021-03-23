@@ -1,12 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { axiosUserBooks } from 'axiosInstances';
 
 import { RootState } from 'types/StateTypes';
 import * as actions from 'store/actions';
 
 import classes from './Shelf.module.scss';
-import { Link } from 'react-router-dom';
+import ShelfItem from './ShelfItem/ShelfItem';
 
 const Shelf: FC = () => {
   const { userShelf } = useSelector((state: RootState) => state.books);
@@ -17,15 +16,6 @@ const Shelf: FC = () => {
     dispatch(actions.fetchBooksOnShelf(idToken, userId));
   }, [dispatch, idToken, userId]);
 
-  function deleteHandler(id: string) {
-    dispatch(actions.deleteBookFromShelf(id));
-
-    axiosUserBooks
-      .delete(`/books/${id}.json`)
-      .then((res) => console.log(res))
-      .catch(console.error);
-  }
-
   return (
     <div className={classes.container}>
       <ul className={classes.bookList}>
@@ -33,33 +23,7 @@ const Shelf: FC = () => {
           userShelf.map((book) => {
             console.log(userShelf, 'userShelf');
             console.log(book, 'book');
-            return (
-              <li key={book.firebaseId} className={classes.singleBook}>
-                <Link to={`/book/${book.id}`}>
-                  <img
-                    src={
-                      book.volumeInfo.imageLinks &&
-                      book.volumeInfo.imageLinks.smallThumbnail
-                    }
-                    alt=""
-                    height="75"
-                    width="50"
-                  />
-                </Link>
-                <span className={classes.bookTitle}>
-                  {`${book.volumeInfo.title} by ${
-                    book.volumeInfo.authors
-                      ? book.volumeInfo.authors[0]
-                      : 'unknown'
-                  }`}
-                </span>
-                <button
-                  className={classes.deleteButton}
-                  onClick={() => deleteHandler(book.firebaseId)}>
-                  Delete
-                </button>
-              </li>
-            );
+            return <ShelfItem book={book} />;
           })
         ) : (
           <h1>Add some books to see them on the shelf!</h1>

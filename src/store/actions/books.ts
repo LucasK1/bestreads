@@ -21,28 +21,30 @@ export const fetchBooksOnShelf = (
   idToken: string | null,
   userId: string | null
 ) => (dispatch: Dispatch) => {
-  axiosUserBooks
-    .get(`/books.json?auth=${idToken}&orderBy="userId"&equalTo="${userId}"`)
-    .then(({ data }) => {
-      console.log(data, 'Dane');
-      const dataValues: Object[] = Object.values(data);
-      const dataKeys = Object.keys(data);
-      const modifiedData: Object[] = dataValues.map(
-        (item: {}, index: number) => {
-          return { ...item, firebaseId: dataKeys[index] };
-        }
-      );
-      dispatch(setUserShelf(modifiedData));
-    })
-    .catch(console.error);
+  userId &&
+    axiosUserBooks
+      .get(`/books.json?auth=${idToken}&orderBy="userId"&equalTo="${userId}"`)
+      .then(({ data }) => {
+        console.log(data, 'Dane');
+        const dataValues: Object[] = Object.values(data);
+        const dataKeys = Object.keys(data);
+        const modifiedData: Object[] = dataValues.map(
+          (item: {}, index: number) => {
+            return { ...item, firebaseId: dataKeys[index] };
+          }
+        );
+        dispatch(setUserShelf(modifiedData));
+      })
+      .catch(console.error);
 };
 
 export const updateRemoteShelf = (
   book: BookType,
   idToken: string,
-  userId: string | null
+  userId: string | null,
+  readState: string
 ) => (dispatch: Dispatch) => {
-  const dataToSend = { ...book, userId: userId };
+  const dataToSend = { ...book, userId: userId, readState: readState };
   axiosUserBooks
     .post(`/books.json?auth=${idToken}`, dataToSend)
     .then(() => dispatch<any>(fetchBooksOnShelf(idToken, userId)))

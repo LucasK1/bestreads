@@ -15,10 +15,11 @@
   gap: 20px;
   column-gap: 50px;
   grid-template-areas:
-    'bookImage title title'
-    '. description description'
-    '. add add'
-    '. alert alert';
+    "bookImage title title"
+    ". description description"
+    ". read read"
+    ". add add"
+    ". alert alert";
 }
 
 .title {
@@ -49,6 +50,17 @@ span {
     border-bottom: 1px solid #ccc;
     margin-right: 635px;
     padding-bottom: 5px;
+  }
+}
+.readState {
+  grid-area: read;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+
+  & > input {
+    margin: 0;
   }
 }
 .links {
