@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AuthState } from 'types/StateTypes';
 import { fetchBooksOnShelf } from './booksReducer';
@@ -17,6 +17,25 @@ const initialState: AuthState = {
   error: null,
   loading: false,
 };
+
+export const authenticate = createAsyncThunk(
+  'auth/authenticate',
+  async (args: { email: string; password: string; isSignup: boolean }) => {
+    const signupData: SignupData = {
+      email: args.email,
+      password: args.password,
+      returnSecureToken: true,
+    };
+
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
+      args.isSignup ? 'signUp' : 'signInWithPassword'
+    }?key=${process.env.REACT_APP_API_KEY}`;
+
+    const { data } = await axios.post(url, signupData);
+
+    return data;
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -49,6 +68,42 @@ const authSlice = createSlice({
       return { ...state, idToken: null, userId: null };
     },
   },
+  extraReducers: {
+    [authenticate.pending.type]: (state, action) => ({
+      ...state,
+      error: null,
+      loading: true,
+    }),
+    [authenticate.fulfilled.type]: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ idToken: string; userId: string; expiresIn: number }>
+    ) => {
+      const expirationDate = new Date(
+        new Date().getTime() + payload.expiresIn * 1000
+      );
+
+      localStorage.setItem('idToken', payload.idToken);
+      localStorage.setItem('userId', payload.userId);
+      localStorage.setItem('expirationDate', expirationDate.toString());
+
+      fetchBooksOnShelf(payload.idToken, payload.userId);
+      checkAuthTimeout(payload.expiresIn);
+      return {
+        ...state,
+        error: null,
+        loading: false,
+        idToken: payload.idToken,
+        userId: payload.userId,
+      };
+    },
+    [authenticate.rejected.type]: (state, { error }: any) => ({
+      ...state,
+      error: error,
+      loading: false,
+    }),
+  },
 });
 
 const { actions, reducer } = authSlice;
@@ -67,40 +122,40 @@ export const checkAuthTimeout = (expirationTime: number) => (
   }, expirationTime * 1000);
 };
 
-export const auth = (
-  email: string,
-  password: string,
-  isSignup: boolean
-) => async (dispatch: AppDispatch) => {
-  dispatch(authStart());
+// export const auth = (
+//   email: string,
+//   password: string,
+//   isSignup: boolean
+// ) => async (dispatch: AppDispatch) => {
+//   dispatch(authStart());
 
-  const signupData: SignupData = {
-    email: email,
-    password: password,
-    returnSecureToken: true,
-  };
+//   const signupData: SignupData = {
+//     email: email,
+//     password: password,
+//     returnSecureToken: true,
+//   };
 
-  const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
-    isSignup ? 'signUp' : 'signInWithPassword'
-  }?key=${process.env.REACT_APP_API_KEY}`;
+//   const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
+//     isSignup ? 'signUp' : 'signInWithPassword'
+//   }?key=${process.env.REACT_APP_API_KEY}`;
 
-  try {
-    const {
-      data: { idToken, localId, expiresIn },
-    } = await axios.post(url, signupData);
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+//   try {
+//     const {
+//       data: { idToken, localId, expiresIn },
+//     } = await axios.post(url, signupData);
+//     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
 
-    localStorage.setItem('idToken', idToken);
-    localStorage.setItem('userId', localId);
-    localStorage.setItem('expirationDate', expirationDate.toString());
+//     localStorage.setItem('idToken', idToken);
+//     localStorage.setItem('userId', localId);
+//     localStorage.setItem('expirationDate', expirationDate.toString());
 
-    dispatch(authSuccess({ idToken, userId: localId }));
-    dispatch(fetchBooksOnShelf(idToken, localId));
-    dispatch(checkAuthTimeout(expiresIn));
-  } catch (err) {
-    dispatch(authFail(err.response.data.error));
-  }
-};
+//     dispatch(authSuccess({ idToken, userId: localId }));
+//     dispatch(fetchBooksOnShelf(idToken, localId));
+//     dispatch(checkAuthTimeout(expiresIn));
+//   } catch (err) {
+//     dispatch(authFail(err.response.data.error));
+//   }
+// };
 
 export const authCheckState = () => (dispatch: AppDispatch) => {
   const idToken = localStorage.getItem('idToken');

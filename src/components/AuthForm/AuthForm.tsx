@@ -9,7 +9,7 @@ import Spinner from 'components/UI/Spinner';
 
 import classes from './AuthForm.module.scss';
 import { Redirect, RouteComponentProps } from 'react-router';
-import { auth } from 'store/reducers/authReducer';
+import { authenticate } from 'store/reducers/authReducer';
 
 const AuthSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -35,7 +35,7 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
     password: string,
     isSignup: boolean
   ) => {
-    dispatch(auth(email, password, isSignup));
+    dispatch(authenticate({ email, password, isSignup }));
   };
 
   let errorMessage = null;
