@@ -2,13 +2,13 @@ import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
-import * as actions from 'store/actions';
 import { RootState } from 'types/StateTypes';
 
 import SearchedBooks from 'components/SearchedBooks/SearchedBooks';
 import Spinner from 'components/UI/Spinner';
 
 import classes from './MainPage.module.scss';
+import { setFetchedBooks } from 'store/reducers/booksReducer';
 
 const MainPage: FC = () => {
   const [input, setInput] = useState('');
@@ -30,9 +30,9 @@ const MainPage: FC = () => {
           console.log(data);
           if (data.items) {
             const items = data.items;
-            dispatch(actions.setFetchedBooks([...items]));
+            dispatch(setFetchedBooks({ fetchedBooks: [...items] }));
           } else {
-            dispatch(actions.setFetchedBooks([]));
+            dispatch(setFetchedBooks({ fetchedBooks: [] }));
           }
           setLoadingResults(false);
         })

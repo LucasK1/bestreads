@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchBooksOnShelf } from 'store/reducers/booksReducer';
 
 import { RootState } from 'types/StateTypes';
-import * as actions from 'store/actions';
 
 import classes from './Shelf.module.scss';
 import ShelfItem from './ShelfItem/ShelfItem';
@@ -13,7 +13,9 @@ const Shelf: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.fetchBooksOnShelf(idToken, userId));
+    if (idToken && userId) {
+      dispatch(fetchBooksOnShelf(idToken, userId));
+    }
   }, [dispatch, idToken, userId]);
 
   return (

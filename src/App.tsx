@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import * as actions from 'store/actions';
+import { authCheckState } from 'store/reducers/authReducer';
 
 import MainPage from 'components/MainPage/MainPage';
 import Book from 'components/Book/Book';
@@ -15,7 +15,7 @@ const App: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.authCheckState());
+    dispatch(authCheckState());
   }, [dispatch]);
 
   return (

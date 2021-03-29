@@ -4,11 +4,11 @@ import { useHistory } from 'react-router';
 import Moment from 'react-moment';
 import axios from 'axios';
 
-import * as actions from 'store/actions';
 import { RootState } from 'types/StateTypes';
 import { BookType } from 'types/BookTypes';
 
 import classes from './Book.module.scss';
+import { updateRemoteShelf } from 'store/reducers/booksReducer';
 
 const Book: FC = () => {
   const [book, setBook] = useState<BookType | null>(null);
@@ -42,8 +42,8 @@ const Book: FC = () => {
       if (book) {
         isBookOnShelf = !!userShelf.find((item) => item.id === book.id);
       }
-      if (!isBookOnShelf && book) {
-        dispatch(actions.updateRemoteShelf(book, idToken, userId, readState));
+      if (!isBookOnShelf && book && userId && idToken) {
+        dispatch(updateRemoteShelf(book, idToken, userId, readState));
         setBookAlreadyExists(false);
         setBookAdded(true);
       } else {

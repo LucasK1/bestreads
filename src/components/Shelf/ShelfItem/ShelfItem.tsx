@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { axiosUserBooks } from 'axiosInstances';
-import * as actions from 'store/actions';
 import { ShelfBookType } from 'types/BookTypes';
 
 import classes from './ShelfItem.module.scss';
+import { deleteBookFromShelf } from 'store/reducers/booksReducer';
 
 interface Props {
   book: ShelfBookType;
@@ -36,7 +36,7 @@ const ShelfItem: FC<Props> = ({ book }) => {
   }
 
   function deleteHandler(id: string) {
-    dispatch(actions.deleteBookFromShelf(id));
+    dispatch(deleteBookFromShelf({ id }));
 
     axiosUserBooks
       .delete(`/books/${id}.json`)

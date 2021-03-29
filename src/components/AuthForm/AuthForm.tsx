@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-import * as actions from 'store/actions';
 import { RootState } from 'types/StateTypes';
 
 import Spinner from 'components/UI/Spinner';
 
 import classes from './AuthForm.module.scss';
 import { Redirect, RouteComponentProps } from 'react-router';
+import { auth } from 'store/reducers/authReducer';
 
 const AuthSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -35,7 +35,7 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
     password: string,
     isSignup: boolean
   ) => {
-    dispatch(actions.auth(email, password, isSignup));
+    dispatch(auth(email, password, isSignup));
   };
 
   let errorMessage = null;

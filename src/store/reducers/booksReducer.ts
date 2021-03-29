@@ -1,51 +1,75 @@
+import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { axiosUserBooks } from 'axiosInstances';
+import { BookType, ShelfBookType } from 'types/BookTypes';
 import { BookState } from '../../types/StateTypes';
-import * as types from '../actions/types';
 
 const initialState: BookState = {
   fetchedBooks: [],
   userShelf: [],
 };
 
-const setFetchedBooks = (state: BookState, action: types.SetFetchedBooks) => {
-  return {
-    ...state,
-    fetchedBooks: action.fetchedBooks,
-  };
-};
+const booksSlice = createSlice({
+  name: 'books',
+  initialState: initialState,
+  reducers: {
+    setFetchedBooks: (
+      state,
+      { payload }: PayloadAction<{ fetchedBooks: BookType[] }>
+    ) => ({ ...state, fetchedBooks: payload.fetchedBooks }),
+    setUserShelf: (
+      state,
+      { payload }: PayloadAction<{ shelf: ShelfBookType[] }>
+    ) => ({ ...state, userShelf: [...payload.shelf] }),
+    deleteBookFromShelf: (
+      state,
+      { payload }: PayloadAction<{ id: string }>
+    ) => {
+      const newShelf = state.userShelf.filter(
+        (book) => book.firebaseId !== payload.id
+      );
+      return { ...state, userShelf: newShelf };
+    },
+  },
+});
 
-const setUserShelf = (state: BookState, action: types.SetUserShelf) => {
-  return {
-    ...state,
-    userShelf: [...action.shelf],
-  };
-};
+const { actions, reducer } = booksSlice;
+export const { setUserShelf, deleteBookFromShelf, setFetchedBooks } = actions;
 
-const deleteBookFromShelf = (
-  state: BookState,
-  action: types.DeleteBookFromShelf
+export const fetchBooksOnShelf = (idToken: string, userId: string) => async (
+  dispatch: Dispatch
 ) => {
-  const newShelf = state.userShelf.filter(
-    (book) => book.firebaseId !== action.id
-  );
-  return {
-    ...state,
-    userShelf: [...newShelf],
-  };
+  try {
+    const { data } = await axiosUserBooks.get(
+      `/books.json?auth=${idToken}&orderBy="userId"&equalTo="${userId}"`
+    );
+
+    console.log(data, 'Dane');
+
+    const dataValues: Object[] = Object.values(data);
+    const dataKeys = Object.keys(data);
+    const modifiedData: ShelfBookType[] = dataValues.map(
+      (item: any, index: number) => {
+        return { ...item, firebaseId: dataKeys[index] };
+      }
+    );
+    dispatch(setUserShelf({ shelf: modifiedData }));
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-const reducer = (
-  state: BookState = initialState,
-  action: types.ActionTypes
-): BookState => {
-  switch (action.type) {
-    case types.SET_FETCHED_BOOKS:
-      return setFetchedBooks(state, action);
-    case types.SET_USER_SHELF:
-      return setUserShelf(state, action);
-    case types.DELETE_BOOK_FROM_SHELF:
-      return deleteBookFromShelf(state, action);
-    default:
-      return state;
+export const updateRemoteShelf = (
+  book: BookType,
+  idToken: string,
+  userId: string,
+  readState: string
+) => async (dispatch: Dispatch) => {
+  const dataToSend = { ...book, userId: userId, readState: readState };
+  try {
+    await axiosUserBooks.post(`/books.json?auth=${idToken}`, dataToSend);
+    dispatch<any>(fetchBooksOnShelf(idToken, userId));
+  } catch (err) {
+    console.error(err);
   }
 };
 
