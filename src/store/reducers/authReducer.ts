@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AuthState } from 'types/StateTypes';
 import { fetchBooksOnShelf } from './booksReducer';
+import { AppDispatch } from 'store/store';
 
 interface SignupData {
   email: string;
@@ -59,7 +60,7 @@ export const {
 } = actions;
 
 export const checkAuthTimeout = (expirationTime: number) => (
-  dispatch: Dispatch
+  dispatch: AppDispatch
 ) => {
   setTimeout(() => {
     dispatch(logout());
@@ -70,13 +71,15 @@ export const auth = (
   email: string,
   password: string,
   isSignup: boolean
-) => async (dispatch: Dispatch) => {
+) => async (dispatch: AppDispatch) => {
   dispatch(authStart());
+
   const signupData: SignupData = {
     email: email,
     password: password,
     returnSecureToken: true,
   };
+
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
     isSignup ? 'signUp' : 'signInWithPassword'
   }?key=${process.env.REACT_APP_API_KEY}`;
@@ -92,16 +95,17 @@ export const auth = (
     localStorage.setItem('expirationDate', expirationDate.toString());
 
     dispatch(authSuccess({ idToken, userId: localId }));
-    dispatch<any>(fetchBooksOnShelf(idToken, localId));
-    dispatch<any>(checkAuthTimeout(expiresIn));
+    dispatch(fetchBooksOnShelf(idToken, localId));
+    dispatch(checkAuthTimeout(expiresIn));
   } catch (err) {
     dispatch(authFail(err.response.data.error));
   }
 };
 
-export const authCheckState = () => (dispatch: Dispatch) => {
+export const authCheckState = () => (dispatch: AppDispatch) => {
   const idToken = localStorage.getItem('idToken');
   const userId = localStorage.getItem('userId');
+
   if (!idToken) {
     dispatch(logout());
   } else {

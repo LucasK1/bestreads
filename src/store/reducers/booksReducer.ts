@@ -1,5 +1,6 @@
-import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { axiosUserBooks } from 'axiosInstances';
+import { AppDispatch } from 'store/store';
 import { BookType, ShelfBookType } from 'types/BookTypes';
 import { BookState } from '../../types/StateTypes';
 
@@ -36,7 +37,7 @@ const { actions, reducer } = booksSlice;
 export const { setUserShelf, deleteBookFromShelf, setFetchedBooks } = actions;
 
 export const fetchBooksOnShelf = (idToken: string, userId: string) => async (
-  dispatch: Dispatch
+  dispatch: AppDispatch
 ) => {
   try {
     const { data } = await axiosUserBooks.get(
@@ -63,11 +64,11 @@ export const updateRemoteShelf = (
   idToken: string,
   userId: string,
   readState: string
-) => async (dispatch: Dispatch) => {
+) => async (dispatch: AppDispatch) => {
   const dataToSend = { ...book, userId: userId, readState: readState };
   try {
     await axiosUserBooks.post(`/books.json?auth=${idToken}`, dataToSend);
-    dispatch<any>(fetchBooksOnShelf(idToken, userId));
+    dispatch(fetchBooksOnShelf(idToken, userId));
   } catch (err) {
     console.error(err);
   }
