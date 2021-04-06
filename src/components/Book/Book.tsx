@@ -42,11 +42,11 @@ const Book: FC = () => {
       if (book) {
         isBookOnShelf = !!userShelf.find((item) => item.id === book.id);
       }
-      if (!isBookOnShelf && book && userId && idToken) {
-        dispatch(updateRemoteShelf(book, idToken, userId, readState));
+      if (!isBookOnShelf && userId && idToken) {
+        dispatch(updateRemoteShelf(book!, idToken, userId, readState));
         setBookAlreadyExists(false);
         setBookAdded(true);
-      } else {
+      } else if (isBookOnShelf) {
         setBookAdded(false);
         setBookAlreadyExists(true);
       }
