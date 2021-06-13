@@ -1,15 +1,13 @@
-import React, { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
-import { authCheckState } from 'store/reducers/authReducer';
-
-import MainPage from 'components/MainPage/MainPage';
-import Book from 'components/Book/Book';
-import Shelf from 'components/Shelf/Shelf';
-import AuthForm from 'components/AuthForm/AuthForm';
-import NavBar from 'components/UI/NavBar/NavBar';
-import Logout from 'components/Logout/Logout';
+import AuthForm from "components/AuthForm/AuthForm";
+import Book from "components/Book/Book";
+import Logout from "components/Logout/Logout";
+import MainPage from "components/MainPage/MainPage";
+import Shelf from "components/Shelf/Shelf";
+import NavBar from "components/UI/NavBar/NavBar";
+import { FC, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { authCheckState } from "store/reducers/authReducer";
 
 const App: FC = () => {
   const dispatch = useDispatch();

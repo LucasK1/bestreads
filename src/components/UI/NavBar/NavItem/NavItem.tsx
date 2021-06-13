@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
-import classes from './NavItem.module.scss';
+import { FC } from "react";
+import { NavLink } from "react-router-dom";
+
+import classes from "./NavItem.module.scss";
 
 interface Props {
   path: string;
@@ -15,7 +16,8 @@ const NavItem: FC<Props> = ({ path, title }) => {
           to={path}
           exact
           className={classes.NavLink}
-          activeClassName={classes.isActive}>
+          activeClassName={classes.isActive}
+        >
           {title}
         </NavLink>
       }

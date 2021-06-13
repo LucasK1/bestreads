@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { axiosUserBooks } from "axiosInstances";
+import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { deleteBookFromShelf } from "store/reducers/booksReducer";
+import { ShelfBookType } from "types/BookTypes";
 
-import { axiosUserBooks } from 'axiosInstances';
-import { ShelfBookType } from 'types/BookTypes';
-
-import classes from './ShelfItem.module.scss';
-import { deleteBookFromShelf } from 'store/reducers/booksReducer';
+import classes from "./ShelfItem.module.scss";
 
 interface Props {
   book: ShelfBookType;
@@ -17,22 +16,22 @@ const ShelfItem: FC<Props> = ({ book }) => {
 
   const bookTitle =
     book.volumeInfo.title.length > 50
-      ? book.volumeInfo.title.substring(0, 49) + '...'
+      ? book.volumeInfo.title.substring(0, 49) + "..."
       : book.volumeInfo.title;
 
-  let readState = '';
+  let readState = "";
   switch (book.readState) {
-    case 'wantToRead':
-      readState = 'Want to Read';
+    case "wantToRead":
+      readState = "Want to Read";
       break;
-    case 'reading':
-      readState = 'Reading';
+    case "reading":
+      readState = "Reading";
       break;
-    case 'read':
-      readState = 'Read';
+    case "read":
+      readState = "Read";
       break;
     default:
-      readState = '';
+      readState = "";
   }
 
   function deleteHandler(id: string) {
@@ -59,12 +58,13 @@ const ShelfItem: FC<Props> = ({ book }) => {
       </Link>
       <span className={classes.bookTitle}>
         {`${bookTitle} by ${
-          book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'unknown'
+          book.volumeInfo.authors ? book.volumeInfo.authors[0] : "unknown"
         }`}
       </span>
       <button
         className={classes.deleteButton}
-        onClick={() => deleteHandler(book.firebaseId)}>
+        onClick={() => deleteHandler(book.firebaseId)}
+      >
         Delete
       </button>
       <span>{readState}</span>

@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from "react";
 
-import classes from './Spinner.module.css';
+import classes from "./Spinner.module.css";
 
 const Spinner: FC = () => {
   return (

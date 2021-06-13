@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { FC } from "react";
+import { NavLink } from "react-router-dom";
 // import _ from 'lodash';
+import { BookType } from "types/BookTypes";
 
-import { BookType } from 'types/BookTypes';
-
-import classes from './SearchedBooks.module.scss';
+import classes from "./SearchedBooks.module.scss";
 
 interface Props {
   books: BookType[];

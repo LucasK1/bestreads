@@ -1,20 +1,19 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import Moment from 'react-moment';
-import axios from 'axios';
+import axios from "axios";
+import { ChangeEvent, FC, useEffect, useState } from "react";
+import Moment from "react-moment";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { updateRemoteShelf } from "store/reducers/booksReducer";
+import { BookType } from "types/BookTypes";
+import { RootState } from "types/StateTypes";
 
-import { RootState } from 'types/StateTypes';
-import { BookType } from 'types/BookTypes';
-
-import classes from './Book.module.scss';
-import { updateRemoteShelf } from 'store/reducers/booksReducer';
+import classes from "./Book.module.scss";
 
 const Book: FC = () => {
   const [book, setBook] = useState<BookType | null>(null);
   const [bookAdded, setBookAdded] = useState(false);
   const [bookAlreadyExists, setBookAlreadyExists] = useState(false);
-  const [readState, setReadState] = useState<string>('wantToRead');
+  const [readState, setReadState] = useState<string>("wantToRead");
 
   const { idToken, userId } = useSelector((state: RootState) => state.auth);
   const { userShelf } = useSelector((state: RootState) => state.books);
@@ -22,7 +21,7 @@ const Book: FC = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const id = history.location.pathname.replace('/book/', '');
+  const id = history.location.pathname.replace("/book/", "");
 
   useEffect(() => {
     axios
@@ -36,7 +35,7 @@ const Book: FC = () => {
 
   function addToShelfHandler() {
     if (!idToken) {
-      history.push('/signup?fromBook');
+      history.push("/signup?fromBook");
     } else {
       let isBookOnShelf = false;
       if (book) {
@@ -62,7 +61,7 @@ const Book: FC = () => {
       {book ? (
         <div className={classes.container}>
           <h1 className={classes.title}>{`${book.volumeInfo.title} by ${
-            book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'unknown'
+            book.volumeInfo.authors ? book.volumeInfo.authors[0] : "unknown"
           }`}</h1>
           <div className={classes.bookImage}>
             <img
@@ -76,7 +75,7 @@ const Book: FC = () => {
           </div>
           <div className={classes.description}>
             <p className={classes.publishedDate}>
-              Published{' '}
+              Published{" "}
               <Moment
                 format="DD MMMM YYYY"
                 date={book.volumeInfo.publishedDate}
@@ -86,7 +85,8 @@ const Book: FC = () => {
               <p
                 dangerouslySetInnerHTML={{
                   __html: book.volumeInfo.description,
-                }}></p>
+                }}
+              ></p>
             )}
           </div>
           <form className={classes.readState}>
@@ -123,12 +123,12 @@ const Book: FC = () => {
             </button>
           )}
           {bookAdded ? (
-            <p style={{ color: '#0f6', gridArea: 'alert' }}>
+            <p style={{ color: "#0f6", gridArea: "alert" }}>
               You added a new book!
             </p>
           ) : null}
           {bookAlreadyExists ? (
-            <p style={{ color: '#f00', gridArea: 'alert' }}>
+            <p style={{ color: "#f00", gridArea: "alert" }}>
               Book is already on your shelf
             </p>
           ) : null}

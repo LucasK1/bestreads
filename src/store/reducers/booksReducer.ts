@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { axiosUserBooks } from 'axiosInstances';
-import { AppDispatch } from 'store/store';
-import { BookType, ShelfBookType } from 'types/BookTypes';
-import { BookState } from '../../types/StateTypes';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { axiosUserBooks } from "axiosInstances";
+import { AppDispatch } from "store/store";
+import { BookType, ShelfBookType } from "types/BookTypes";
+
+import { BookState } from "../../types/StateTypes";
 
 const initialState: BookState = {
   fetchedBooks: [],
@@ -10,7 +11,7 @@ const initialState: BookState = {
 };
 
 const booksSlice = createSlice({
-  name: 'books',
+  name: "books",
   initialState: initialState,
   reducers: {
     setFetchedBooks: (
@@ -36,42 +37,39 @@ const booksSlice = createSlice({
 const { actions, reducer } = booksSlice;
 export const { setUserShelf, deleteBookFromShelf, setFetchedBooks } = actions;
 
-export const fetchBooksOnShelf = (idToken: string, userId: string) => async (
-  dispatch: AppDispatch
-) => {
-  try {
-    const { data } = await axiosUserBooks.get(
-      `/books.json?auth=${idToken}&orderBy="userId"&equalTo="${userId}"`
-    );
+export const fetchBooksOnShelf =
+  (idToken: string, userId: string) =>
+  async (dispatch: AppDispatch): void => {
+    try {
+      const { data } = await axiosUserBooks.get(
+        `/books.json?auth=${idToken}&orderBy="userId"&equalTo="${userId}"`
+      );
 
-    console.log(data, 'Dane');
+      console.log(data, "Dane");
 
-    const dataValues: Object[] = Object.values(data);
-    const dataKeys = Object.keys(data);
-    const modifiedData: ShelfBookType[] = dataValues.map(
-      (item: any, index: number) => {
-        return { ...item, firebaseId: dataKeys[index] };
-      }
-    );
-    dispatch(setUserShelf({ shelf: modifiedData }));
-  } catch (err) {
-    console.error(err);
-  }
-};
+      const dataValues: Object[] = Object.values(data);
+      const dataKeys = Object.keys(data);
+      const modifiedData: ShelfBookType[] = dataValues.map(
+        (item: any, index: number) => {
+          return { ...item, firebaseId: dataKeys[index] };
+        }
+      );
+      dispatch(setUserShelf({ shelf: modifiedData }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-export const updateRemoteShelf = (
-  book: BookType,
-  idToken: string,
-  userId: string,
-  readState: string
-) => async (dispatch: AppDispatch) => {
-  const dataToSend = { ...book, userId: userId, readState: readState };
-  try {
-    await axiosUserBooks.post(`/books.json?auth=${idToken}`, dataToSend);
-    dispatch(fetchBooksOnShelf(idToken, userId));
-  } catch (err) {
-    console.error(err);
-  }
-};
+export const updateRemoteShelf =
+  (book: BookType, idToken: string, userId: string, readState: string) =>
+  async (dispatch: AppDispatch): void => {
+    const dataToSend = { ...book, userId: userId, readState: readState };
+    try {
+      await axiosUserBooks.post(`/books.json?auth=${idToken}`, dataToSend);
+      dispatch(fetchBooksOnShelf(idToken, userId));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
 export default reducer;

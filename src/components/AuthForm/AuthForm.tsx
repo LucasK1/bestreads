@@ -1,24 +1,22 @@
-import React, { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import Spinner from "components/UI/Spinner";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { FC, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect, RouteComponentProps } from "react-router";
+import { authenticate } from "store/reducers/authReducer";
+import { RootState } from "types/StateTypes";
+import * as Yup from "yup";
 
-import { RootState } from 'types/StateTypes';
-
-import Spinner from 'components/UI/Spinner';
-
-import classes from './AuthForm.module.scss';
-import { Redirect, RouteComponentProps } from 'react-router';
-import { authenticate } from 'store/reducers/authReducer';
+import classes from "./AuthForm.module.scss";
 
 const AuthSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
+  email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string()
-    .required('Required')
-    .min(8, 'Password must be at least 8 characters'),
+    .required("Required")
+    .min(8, "Password must be at least 8 characters"),
   passwordConfirmation: Yup.string().oneOf(
-    [Yup.ref('password'), null],
-    'Passwords must match'
+    [Yup.ref("password"), null],
+    "Passwords must match"
   ),
 });
 
@@ -40,14 +38,14 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
 
   let errorMessage = null;
   if (error) {
-    errorMessage = error.message.toLowerCase().split('_');
+    errorMessage = error.message.toLowerCase().split("_");
     console.log(errorMessage);
-    errorMessage = errorMessage.join(' ');
+    errorMessage = errorMessage.join(" ");
   }
 
   let authRedirect = null;
   if (idToken) {
-    if (history.location.search === '?fromBook') {
+    if (history.location.search === "?fromBook") {
       history.goBack();
     } else {
       authRedirect = <Redirect to="/" />;
@@ -59,13 +57,14 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
       {authRedirect}
       <Formik
         initialValues={{
-          email: '',
-          password: '',
+          email: "",
+          password: "",
         }}
         validationSchema={AuthSchema}
         onSubmit={({ email, password }) =>
           submitHandler(email, password, isSignup)
-        }>
+        }
+      >
         {() => (
           <Form className={classes.form}>
             {/* <label htmlFor="email">Email</label> */}
@@ -108,7 +107,7 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
               </>
             ) : null}
             <button type="submit" className={classes.submitButton}>
-              {isSignup ? 'Sign up' : 'Sign in'}
+              {isSignup ? "Sign up" : "Sign in"}
             </button>
           </Form>
         )}
@@ -119,7 +118,8 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
             Already Signed up?
             <button
               onClick={() => setIsSignup(false)}
-              className={classes.ifSignedup__link}>
+              className={classes.ifSignedup__link}
+            >
               Sign in
             </button>
           </>
@@ -128,7 +128,8 @@ const AuthForm: FC<RouteComponentProps> = ({ history }) => {
             Don't have an account?
             <button
               onClick={() => setIsSignup(true)}
-              className={classes.ifSignedup__link}>
+              className={classes.ifSignedup__link}
+            >
               Sign up
             </button>
           </>

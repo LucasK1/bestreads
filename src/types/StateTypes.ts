@@ -1,4 +1,4 @@
-import { BookType, ShelfBookType } from './BookTypes';
+import { BookType, ShelfBookType } from "./BookTypes";
 
 export interface BookState {
   fetchedBooks: BookType[];

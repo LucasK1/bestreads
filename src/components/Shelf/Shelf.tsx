@@ -1,11 +1,10 @@
-import React, { FC, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchBooksOnShelf } from 'store/reducers/booksReducer';
+import { FC, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBooksOnShelf } from "store/reducers/booksReducer";
+import { RootState } from "types/StateTypes";
 
-import { RootState } from 'types/StateTypes';
-
-import classes from './Shelf.module.scss';
-import ShelfItem from './ShelfItem/ShelfItem';
+import classes from "./Shelf.module.scss";
+import ShelfItem from "./ShelfItem/ShelfItem";
 
 const Shelf: FC = () => {
   const { userShelf } = useSelector((state: RootState) => state.books);
@@ -23,9 +22,9 @@ const Shelf: FC = () => {
       <ul className={classes.bookList}>
         {userShelf.length ? (
           userShelf.map((book) => {
-            console.log(userShelf, 'userShelf');
-            console.log(book, 'book');
-            return <ShelfItem book={book} />;
+            console.log(userShelf, "userShelf");
+            console.log(book, "book");
+            return <ShelfItem key={book.id} book={book} />;
           })
         ) : (
           <h1>Add some books to see them on the shelf!</h1>

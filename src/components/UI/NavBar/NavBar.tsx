@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { FC } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "types/StateTypes";
 
-import NavItem from './NavItem/NavItem';
-import { RootState } from 'types/StateTypes';
 // import { ReactComponent as CaretIcon } from '../../../assets/caret.svg';
 // import DropdownMenu from '../../DropdownMenu/DropdownMenu';
-
-import classes from './NavBar.module.scss';
+import classes from "./NavBar.module.scss";
+import NavItem from "./NavItem/NavItem";
 
 const NavBar: FC = () => {
   const { idToken } = useSelector((state: RootState) => state.auth);

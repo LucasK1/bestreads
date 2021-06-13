@@ -1,17 +1,15 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import axios from "axios";
+import SearchedBooks from "components/SearchedBooks/SearchedBooks";
+import Spinner from "components/UI/Spinner";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFetchedBooks } from "store/reducers/booksReducer";
+import { RootState } from "types/StateTypes";
 
-import { RootState } from 'types/StateTypes';
-
-import SearchedBooks from 'components/SearchedBooks/SearchedBooks';
-import Spinner from 'components/UI/Spinner';
-
-import classes from './MainPage.module.scss';
-import { setFetchedBooks } from 'store/reducers/booksReducer';
+import classes from "./MainPage.module.scss";
 
 const MainPage: FC = () => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [loadingResults, setLoadingResults] = useState(false);
   const [showSearchedResults, setShowSearchedResults] = useState(false);
 
@@ -20,8 +18,8 @@ const MainPage: FC = () => {
 
   function fetchBooks(input: string) {
     if (input) {
-      const inputArray = input.split(',');
-      const searchQuery = inputArray.join('+');
+      const inputArray = input.split(",");
+      const searchQuery = inputArray.join("+");
       axios
         .get(
           `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=30&langRestrict=en`
